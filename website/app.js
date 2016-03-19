@@ -16,7 +16,7 @@ mongoose.connect('mongodb://startupbingo:segS3K4Zd0gz@ds043991.mlab.com:43991/st
 //require('./models/emailoptin.model.js');
 
 var app = express();
-var socket = require('socket.io')(80);
+var socket = require('socket.io')(3000);
 
 
 
