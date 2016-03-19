@@ -2,6 +2,11 @@
 <resources>
     <string-array name="random_texts">
         <item>\'we\'re x for y\'</item>
-        <item>disrupting pitches one Tylor at a time</item>
+        <item>\'disrupting pitches one Tylor at a time\'</item>
+        <item>\'inspirify for _______\'</item>
+        <item>\'Uber for lawn mowing\'</item>
+        <item>\'Big Data Disruption\'</item>
+        <item>\'Tinder for dog parks\'</item>
+        <item>\'bingo for buzzwords\'</item>
     </string-array>
 </resources>

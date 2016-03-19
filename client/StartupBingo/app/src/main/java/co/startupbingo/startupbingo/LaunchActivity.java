@@ -1,26 +1,35 @@
 package co.startupbingo.startupbingo;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Inject;
+
+import co.startupbingo.startupbingo.api.IApiClient;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class LaunchActivity extends AppCompatActivity {
 
+    private static final String TAG = LaunchActivity.class.getName();
+    @Inject IApiClient apiClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((StartupBingo)getApplication()).getNetComponent().inject(this);
         setContentView(R.layout.activity_launch);
         Observable.empty()
                 .delay(2,TimeUnit.SECONDS)
@@ -28,6 +37,7 @@ public class LaunchActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnTerminate(this::transitionActivity)
                 .subscribe();
+
     }
 
     private void transitionActivity() {

@@ -39,6 +39,8 @@
             android:lines="2"
             android:ellipsize="end" />
         <android.support.design.widget.TextInputLayout
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
             android:layout_marginTop="16dp"
             android:id="@+id/main_page_hashtag_layout"
             android:layout_width="match_parent"
@@ -50,10 +52,11 @@
                 android:hint="@string/hashtag_hint"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center_horizontal"
                 android:textSize="14sp" />
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
             android:layout_marginTop="16dp"
             android:id="@+id/main_page_user_layout"
             android:layout_width="match_parent"
@@ -65,7 +68,6 @@
                 android:singleLine="true"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center_horizontal"
                 android:textSize="14sp" />
         </android.support.design.widget.TextInputLayout>
         <LinearLayout

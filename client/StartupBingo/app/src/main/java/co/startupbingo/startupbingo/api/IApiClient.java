@@ -1,8 +1,11 @@
 package co.startupbingo.startupbingo.api;
 
-/**
- * Created by jubb on 19/03/16.
- */
-public interface IApiClient {
+import java.net.Socket;
 
+import co.startupbingo.startupbingo.model.Word;
+import rx.Observable;
+import rx.Subscriber;
+
+public interface IApiClient {
+    Observable<Word> getRandomizedWordList();
 }
