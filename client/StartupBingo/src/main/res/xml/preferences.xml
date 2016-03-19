@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+            android:key="@string/pref_vibrate_key"
+            android:title="@string/pref_title_vibrate"
+            android:summary="@string/pref_summary_vibrate"
+            android:defaultValue="true" />
+    <Preference
+            android:key="@string/pref_reload_default_cards_key"
+            android:title="@string/pref_title_reload"
+            android:summary="@string/pref_summary_reload"/>
+    <Preference
+            android:key="@string/pref_reset_colors_key"
+            android:title="@string/pref_title_reset_colors"
+            android:summary="@string/pref_summary_reset_colors"/>
+    <Preference
+            android:key="@string/pref_show_changelog_key"
+            android:title="@string/pref_title_changelog"
+            android:summary="@string/pref_summary_changelog"/>
+
+</PreferenceScreen>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/action_new"
+          android:icon="@drawable/ic_action_new"
+          android:title="@string/action_new"
+          android:showAsAction="ifRoom"
+          />
+    <item android:id="@+id/action_edit"
+          android:icon="@drawable/ic_action_edit"
+          android:title="@string/action_edit"
+          android:showAsAction="ifRoom"
+          android:visible="false"
+          />
+    <item android:id="@+id/action_accept"
+          android:icon="@drawable/ic_action_accept"
+          android:title="@string/action_accept"
+          android:showAsAction="ifRoom"
+          android:visible="false"
+          />
+    <item android:id="@+id/action_save_as"
+          android:icon="@drawable/ic_action_save"
+          android:title="@string/action_save"
+          android:showAsAction="ifRoom"
+          android:visible="false"
+            />
+    <item android:id="@+id/action_share_bullshit"
+          android:icon="@drawable/ic_action_share"
+          android:title="@string/action_share_file"
+          android:showAsAction="ifRoom"
+          android:visible="false"
+            />
+    <item android:id="@+id/action_share_image"
+          android:icon="@drawable/ic_action_send_now"
+          android:title="@string/action_share_image"
+          android:showAsAction="ifRoom"
+          android:visible="false"
+            />
+    <item android:id="@+id/action_delete"
+          android:icon="@drawable/ic_action_delete"
+          android:title="@string/action_delete"
+          android:showAsAction="ifRoom"
+          android:visible="false"
+            />
+    <item android:id="@+id/action_shuffle"
+          android:icon="@drawable/ic_action_shuffle"
+          android:title="@string/action_shuffle"
+          android:showAsAction="ifRoom"
+          android:visible="false"
+            />
+    <item android:id="@+id/action_settings"
+          android:icon="@drawable/ic_action_settings"
+          android:title="@string/action_settings"
+          android:showAsAction="ifRoom"
+          android:visible="false"
+            />
+    <item android:id="@+id/action_increase_font"
+          android:icon="@drawable/ic_action_collapse"
+          android:title="@string/action_increase_font"
+          android:showAsAction="ifRoom"
+          android:visible="false"
+            />
+    <item android:id="@+id/action_decrease_font"
+          android:icon="@drawable/ic_action_expand"
+          android:title="@string/action_decrease_font"
+          android:showAsAction="ifRoom"
+          android:visible="false"
+            />
+</menu>
