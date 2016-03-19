@@ -9,6 +9,7 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
   <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
   <style>
     body {
       padding-top: 50px;
@@ -22,67 +23,79 @@
 </head>
 <body>
 <!--[if lt IE 8]>
-<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<p class="browserupgrade">filthy ie user gtfo</p>
 <![endif]-->
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">Project name</a>
-    </div>
-    <div id="navbar" class="navbar-collapse collapse">
-      <form class="navbar-form navbar-right" role="form">
-        <div class="form-group">
-          <input type="text" placeholder="Email" class="form-control">
-        </div>
-        <div class="form-group">
-          <input type="password" placeholder="Password" class="form-control">
-        </div>
-        <button type="submit" class="btn btn-success">Sign in</button>
-      </form>
-    </div><!--/.navbar-collapse -->
-  </div>
-</nav>
 
-<!-- Main jumbotron for a primary marketing message or call to action -->
-<div class="jumbotron">
-  <div class="container">
-    <h1>Hello, world!</h1>
-    <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
-    <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
+
+<div class="landing-container">
+  <div class="landing">
+    <img class="logo img-responsive" src="/images/logo.png" width="15%" >
   </div>
+  <div class="logo-caption">"We're like x for y"</div>
 </div>
 
-<div class="container">
-  <!-- Example row of columns -->
-  <div class="row">
-    <div class="col-md-4">
-      <h2>Heading</h2>
-      <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-      <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-      <h2>Heading</h2>
-      <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-      <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-      <h2>Heading</h2>
-      <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-      <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-    </div>
+<div class="divider counter-container">
+
+  <div class="col-md-3 counter-style" id="counter-1">
+    <h1>70+</h1>
+     <h3>DOWNLOADS</h3>
+  </div>
+  <div class="col-md-3 counter-style" id="counter-2">
+    <h1>100+</h1>
+     <h2>GAMES PLAYED</h2>
+  </div>
+  <div class="col-md-3 counter-style" id="counter-3">
+    <h1>20+</h1>
+      <h3>USERS ONLINE</h3>
   </div>
 
-  <hr>
+</div>
+<div class="email">
+    <h1>Ready to play?</h1>
+  <form id="email-option">
+    <fieldset class="form-inline">
+    <input id="email" class="form-control" type="email" placeholder="email address">
+    <button class="btn btn-primary" id="submit">Submit</button>
+    </fieldset>
+  </form>
+</div>
 
-  <footer>
-    <p>&copy; Company 2015</p>
-  </footer>
+<div class="footer">
+
+  <div class="col-md-3 social-icon">
+    <a href="https://twitter.com/startup_bingo" style="text-decoration: none;">
+        <span class="fa-stack fa-lg">
+          <i class="fa fa-circle fa-stack-2x" style="color: #55acee;"></i>
+          <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+    </a>
+  </div>
+
+
+  <div class="col-md-3 social-icon">
+    <a href="https://www.instagram.com/startupbingo/" style="text-decoration: none;">
+        <span class="fa-stack fa-lg">
+          <i class="fa fa-circle fa-stack-2x" style="color: #125688;"></i>
+          <i class="fa fa-instagram fa-stack-1x fa-inverse"></i>
+        </span>
+    </a>
+  </div>
+
+
+  <div class="col-md-3 social-icon">
+    <a href="mailto:hello@startupbingo.co" style="text-decoration: none;">
+        <span class="fa-stack fa-lg">
+          <i class="fa fa-circle fa-stack-2x" style="color: #dd4b39;"></i>
+          <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+        </span>
+    </a>
+  </div>
+
+
+</div>
+
+
+
 </div> <!-- /container -->        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
 

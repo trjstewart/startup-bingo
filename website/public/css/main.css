@@ -4,19 +4,125 @@
    Author's custom styles
    ========================================================================== */
 
+    @font-face {
+        font-family: 'SignPainter-HouseScript';
+        src: url('../fonts/SignPainter-HouseScript.ttf');
+    }
+
+    @font-face{
+        font-family: 'ADAM CC PRO';
+        src: url('../fonts/ADAM.CG%20PRO.otf');
+    }
+
+    body{
+        padding:0;
+        background-color: #FAF9F5;
+    }
+
+    .landing-container{
+        background-image: url("../images/header-image.jpg");
+        background-size: 100%;
+        background-position: center;
+        background-position: 0 80%;
+        height: 30vh;
+        min-height:380px;
+    }
+
+    .landing{
+        display: flex;
+        justify-content: center;
+    }
+
+    .logo{
+        padding-top: 2vh;
+    }
+
+    .logo-caption{
+        font-family: 'SignPainter-HouseScript';
+        color: white;
+        font-size: 5em;
+        display: flex;
+        justify-content: center;
+        height: 15vh;
+        min-height:100px;
+    }
 
 
+    .footer{
+        float: left;
+    }
 
 
+    .divider{
+        width:100vw;
+        max-width:100%;
+        height:20vh;
+        max-height:20%;
+        min-height:250px;
+        background-color: #FBCA5D;
+    }
 
+    .counter-container{
+        font-family: 'ADAM CC PRO';
+        display: flex;
+        justify-content: center;
+    }
 
+    .counter-style{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
 
+    .counter-container h2{
+        font-size:3.5em;
+    }
 
+    .counter-container h3{
+        font-size:2em;
+    }
 
+    .counter-container h1{
+        font-size:7em;
 
+    }
 
+    #counter-1{}
+    #counter-2{}
+    #counter-3{}
 
+    .email{
+        width: 100vw;
+        max-width:100%;
+        height: 25vh;
+        background-color: #FAF9F5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
 
+    .email h1{
+        font-family: "SignPainter-HouseScript";
+        font-size:4em;
 
+    }
 
+    #email-option{
+        display: block;
+    }
 
+    .footer{
+        width:100vw;
+        max-width:100%;
+        display: flex;
+        justify-content: center;
+        background-color: #FBCA5D;
+    }
+
+    .social-icon{
+        display: flex;
+        justify-content: center;
+        margin: 5px;
+    }
