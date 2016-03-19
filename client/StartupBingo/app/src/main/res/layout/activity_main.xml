@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/myGrid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:verticalSpacing="10dp"
+
+        android:horizontalSpacing="10dp"
+        android:numColumns="3"
+        android:columnWidth="60dp"
+        android:stretchMode="columnWidth"
+
+        android:gravity="center"
+        android:background="#717171"
+        android:focusableInTouchMode="false"
+        android:textFilterEnabled="false" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="44dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Player Count"
+        android:id="@+id/textView"
+        android:layout_gravity="center|bottom"
+        android:gravity="center" />
+
+</LinearLayout>
