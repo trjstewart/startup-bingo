@@ -10,12 +10,13 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="co.startupbingo.startupbingo.LaunchActivity"
-    android:background="@color/colorPrimary"
+    android:background="@color/colorPrimaryDark"
     tools:showIn="@layout/activity_launch">
     <ImageView
         android:src="@drawable/logo"
         android:scaleType="centerInside"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/logo_description" />
 </RelativeLayout>
