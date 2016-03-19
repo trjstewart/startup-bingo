@@ -6,13 +6,15 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
+var api = require('./routes/api');
 
 // Import, Configure and Initialize Mongoose.
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://startupbingo:segS3K4Zd0gz@ds043991.mlab.com:43991/startup-bingo', function(error) {
   (error) ? console.log('Database Connection Error: ' + error) : console.log('Successfully Connected to MongoLab!');
 });
+
+//require('./models/emailoptin.model.js');
 
 var app = express();
 
@@ -28,8 +30,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Routes
 app.use('/', routes);
-app.use('/users', users);
+app.use('/api', api);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
