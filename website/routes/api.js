@@ -1,13 +1,18 @@
-var express = require('express');
-var router = express.Router();
+var fs = require('fs');
 
-var EmailOptin = require('../models/emailoptin.model');
-
-// Email Optin
-router.post('/emailoptin', function(req, res) {
-  console.log(req);
-});
+module.exports = function(app, socket){
 
 
+  app.get('/emailoptin', function(req, res){
 
-module.exports = router;
+    //TODO
+    res.send({status:200,data:"1v1"})
+
+  });
+
+  app.get('/words', function(req, res){
+      fs.readFile('../database.json')
+  });
+
+
+};
