@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="random_texts">
+        <item>\'we\'re x for y\'</item>
+        <item>disrupting pitches one Tylor at a time</item>
+    </string-array>
+</resources>

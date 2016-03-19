@@ -11,5 +11,79 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="co.startupbingo.startupbingo.MainActivity"
     tools:showIn="@layout/activity_main">
-
+    <LinearLayout
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:descendantFocusability="beforeDescendants"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+        <ImageView
+            android:src="@drawable/logo_trans"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/logo_height"
+            android:paddingLeft="80dp"
+            android:paddingRight="80dp" />
+        <TextView
+            android:id="@+id/main_page_random_text"
+            android:textSize="18sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-thin"
+            android:layout_marginTop="24dp"
+            android:textAlignment="gravity"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:lines="2"
+            android:ellipsize="end" />
+        <android.support.design.widget.TextInputLayout
+            android:layout_marginTop="16dp"
+            android:id="@+id/main_page_hashtag_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/main_page_hashtag_edit_text"
+                android:imeOptions="actionNext"
+                android:singleLine="true"
+                android:hint="@string/hashtag_hint"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:textSize="14sp" />
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_marginTop="16dp"
+            android:id="@+id/main_page_user_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/main_page_user_edit_text"
+                android:imeOptions="actionDone"
+                android:hint="@string/literal_username"
+                android:singleLine="true"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:textSize="14sp" />
+        </android.support.design.widget.TextInputLayout>
+        <LinearLayout
+            android:clickable="true"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:id="@+id/main_page_bingo_button_layout"
+            android:paddingTop="32dp"
+            android:paddingBottom="32dp"
+            android:layout_marginTop="32dp">
+            <TextView
+                android:text="@string/bingo_thing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:textColor="@color/colorAccent" />
+        </LinearLayout>
+    </LinearLayout>
 </RelativeLayout>
