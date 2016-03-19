@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StartupBingo", "StartupBingo\StartupBingo.csproj", "{24ADCD36-9D53-4959-B00E-14501C5C3CF7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StartupBingo.UITests", "StartupBingo.UITests\StartupBingo.UITests.csproj", "{0680FBD2-C6F8-4AE6-9351-36BEDF9FCC53}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0680FBD2-C6F8-4AE6-9351-36BEDF9FCC53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0680FBD2-C6F8-4AE6-9351-36BEDF9FCC53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0680FBD2-C6F8-4AE6-9351-36BEDF9FCC53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0680FBD2-C6F8-4AE6-9351-36BEDF9FCC53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24ADCD36-9D53-4959-B00E-14501C5C3CF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24ADCD36-9D53-4959-B00E-14501C5C3CF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24ADCD36-9D53-4959-B00E-14501C5C3CF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24ADCD36-9D53-4959-B00E-14501C5C3CF7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
