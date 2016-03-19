@@ -1,11 +1,11 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-emailpotinSchema = new Schema( {
+emailoptinSchema = new Schema( {
     dateTime: { type : Date, default: Date.now },
-    email: String
+    email: { type: String, unique: true }
 });
 
-EmailOptin = mongoose.model('bump', emailpotinSchema);
+EmailOptin = mongoose.model('emailoptin', emailoptinSchema);
 
 module.exports = EmailOptin;
