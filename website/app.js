@@ -8,6 +8,12 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
+// Import, Configure and Initialize Mongoose.
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://startupbingo:segS3K4Zd0gz@ds043991.mlab.com:43991/startup-bingo', function(error) {
+  (error) ? console.log('Database Connection Error: ' + error) : console.log('Successfully Connected to MongoLab!');
+});
+
 var app = express();
 
 // view engine setup
