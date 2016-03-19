@@ -8,4 +8,6 @@ router.post('/emailoptin', function(req, res) {
   console.log(req);
 });
 
+
+
 module.exports = router;
