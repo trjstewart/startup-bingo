@@ -21,9 +21,10 @@
 
     .landing-container{
         background-image: url("../images/header-image.jpg");
-        background-size: 100%;
+        background-size: cover;
         background-position: center;
         background-position: 0 80%;
+        background-repeat: no-repeat;
         height: 30vh;
         min-height:380px;
     }
@@ -35,6 +36,10 @@
 
     .logo{
         padding-top: 2vh;
+        width:15%;
+        height: 15%;
+        min-width:150px;
+        min-height:150px;
     }
 
     .logo-caption{
@@ -76,14 +81,17 @@
     }
 
     .counter-container h2{
+        white-space: nowrap;
         font-size:3.5em;
     }
 
     .counter-container h3{
+        white-space: nowrap;
         font-size:2em;
     }
 
     .counter-container h1{
+        white-space: nowrap;
         font-size:7em;
 
     }
@@ -96,6 +104,7 @@
         width: 100vw;
         max-width:100%;
         height: 25vh;
+        min-height:300px;
         background-color: #FAF9F5;
         display: flex;
         justify-content: center;
@@ -126,3 +135,36 @@
         justify-content: center;
         margin: 5px;
     }
+
+    /* mobile fixes */
+@media only screen and (max-width: 1390px) {
+
+    .counter-container h2{ font-size:3em; }
+
+    .counter-container h3{ Font-size:1.5em;    }
+
+    .counter-container h1{ font-size:4em;   }
+
+}
+
+@media only screen and (max-width: 990px) {
+
+    .counter-container h2{ font-size:2.5em; }
+
+    .counter-container h3{ Font-size:1em;    }
+
+    .counter-container h1{ font-size:3.5em;   }
+
+}
+
+    @media only screen and (max-width: 640px) {
+
+        .counter-container h2{ font-size:1.5em; }
+
+        .counter-container h3{ Font-size:0.8em;    }
+
+        .counter-container h1{ font-size:2em;   }
+
+    }
+
+
