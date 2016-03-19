@@ -10,7 +10,7 @@ module.exports = function(app, socket){
 
   });
 
-  app.get('/words', function(req, res){
+  app.get('/api/words', function(req, res){
     var arrOfWords =[], nOfWords = 25;
     fs.readFile('database.json', 'utf8', function (err, data) {
       var obj = JSON.parse(data);
