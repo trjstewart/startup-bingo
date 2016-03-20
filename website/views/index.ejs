@@ -53,7 +53,8 @@
 </div>
 <div class="email">
     <h1>Ready to play?</h1>
-  <form id="email-option">
+  <span id="email-optin-message" style="visibility: hidden">Thanks for registering! We will let you know as soon as Startup Bingo is ready to play!</span>
+  <form id="email-optin">
     <fieldset class="form-inline">
     <input id="email" class="form-control" type="email" placeholder="email address">
     <button class="btn btn-primary" id="submit">Submit</button>
@@ -97,7 +98,8 @@
 
 
 
-</div> <!-- /container -->        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+</div> <!-- /container -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.js"></script>
 <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
 
 <script src="js/vendor/bootstrap.min.js"></script>
@@ -105,8 +107,20 @@
 <script src="js/plugins.js"></script>
 <script src="js/main.js"></script>
 
-<!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
 <script>
+  $("document").ready(function () {
+    $("#submit").click(function () {
+      $('#email-optin').submit(function (e) {
+        e.preventDefault();
+        $.post( "http://startupbingo.co/api/emailoptin", { email: $('#email').val() })
+                .done(function(response) {
+                  $('#email-optin-message').css('visibility', 'visible');
+                })
+      });
+    });
+  });
+
+  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
   (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
           function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
     e=o.createElement(i);r=o.getElementsByTagName(i)[0];
