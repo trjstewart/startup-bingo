@@ -7,7 +7,10 @@ import android.preference.PreferenceManager;
 import javax.inject.Singleton;
 
 import co.startupbingo.startupbingo.api.IApiClient;
+import co.startupbingo.startupbingo.api.ISocketClient;
+import co.startupbingo.startupbingo.api.RealSocketClient;
 import co.startupbingo.startupbingo.api.RestApiClient;
+import co.startupbingo.startupbingo.game.IGameThread;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.Cache;
@@ -48,5 +51,10 @@ public class NetModule {
                 .baseUrl(mBaseUrl)
                 .okHttpClient(httpClient)
                 .build();
+    }
+    @Provides
+    @Singleton
+    ISocketClient provideSocketClient(){
+        return new RealSocketClient();
     }
 }

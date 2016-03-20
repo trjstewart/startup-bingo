@@ -10,9 +10,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import co.startupbingo.startupbingo.R;
 import co.startupbingo.startupbingo.model.Word;
+import rx.Observable;
 
 public class GameGridRecyclerAdapter extends RecyclerView.Adapter<GameGridRecyclerAdapter.ViewHolder> {
 
@@ -22,20 +24,21 @@ public class GameGridRecyclerAdapter extends RecyclerView.Adapter<GameGridRecycl
 
     public GameGridRecyclerAdapter(Context context) {
         mContext = context;
-        if (mContext instanceof GameGridRecyclerEvents){
-            mListener = (GameGridRecyclerEvents)mContext;
-        } else {
-            throw new RuntimeException("RuntimeError: Thing must implement "+GameGridRecyclerEvents.class.getName());
-        }
     }
 
-    public boolean addWord(Word newWord){
-        return wordArrayList!=null&&wordArrayList.add(newWord);
+    public void setOnEventsListener(GameGridRecyclerEvents listener){
+        mListener = listener;
+    }
+
+    public boolean addWord(Word newWord) {
+        wordArrayList.add(newWord);
+        notifyItemInserted(getItemCount());
+        return true;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.game_grid_template,parent);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.game_grid_template,parent,false);
         return new ViewHolder(view);
     }
 
@@ -46,6 +49,13 @@ public class GameGridRecyclerAdapter extends RecyclerView.Adapter<GameGridRecycl
                         ContextCompat.getColor(mContext,R.color.colorAccent):
                         ContextCompat.getColor(mContext,R.color.transparent));
         holder.tileTextView.setText(currentWord.getTileString());
+        holder.tileClickLayout.setOnClickListener(v->{
+            if (mListener!=null){
+                mListener.onClickTile(currentWord,position);
+                currentWord.isChecked=true;
+                notifyItemChanged(position);
+            }
+        });
     }
 
     @Override
@@ -54,8 +64,8 @@ public class GameGridRecyclerAdapter extends RecyclerView.Adapter<GameGridRecycl
     }
 
     public interface GameGridRecyclerEvents {
-        void onClickTile(Word selectedWord);
-        void onLongClickTile(Word selectedTile);
+        void onClickTile(Word selectedWord, int pos);
+        void onLongClickTile(Word selectedTile, int pos);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

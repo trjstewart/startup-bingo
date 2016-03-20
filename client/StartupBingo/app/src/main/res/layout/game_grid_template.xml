@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<co.startupbingo.startupbingo.ui.SquareGameTileLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<co.startupbingo.startupbingo.ui.SquareGameTileLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/game_tile_base_layout">
+    android:id="@+id/game_tile_base_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <RelativeLayout
+        android:clickable="true"
+        android:background="?android:attr/selectableItemBackground"
         android:id="@+id/game_tile_click_layout"
+        android:layout_centerInParent="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <TextView
@@ -15,6 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:ellipsize="end"
-            android:id="@+id/game_tile_text_view" />
+            android:id="@+id/game_tile_text_view"
+            android:textAlignment="gravity" />
     </RelativeLayout>
 </co.startupbingo.startupbingo.ui.SquareGameTileLayout>

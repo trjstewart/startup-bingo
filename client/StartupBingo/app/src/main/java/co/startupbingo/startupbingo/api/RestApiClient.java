@@ -72,7 +72,7 @@ public class RestApiClient implements IApiClient {
                     gsonBuilder.registerTypeAdapter(Word[].class, new WordListDeserializer());
                     Gson gson = gsonBuilder.create();
                     Word[] words = gson.fromJson(response.body().string(),Word[].class);
-                    for(Word word : words){
+                    for(Word word : words) {
                         sub.onNext(word);
                     }
                     sub.onCompleted();

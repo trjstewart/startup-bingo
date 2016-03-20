@@ -42,7 +42,10 @@ public class LaunchActivity extends AppCompatActivity {
 
     private void transitionActivity() {
         Intent mainIntent = new Intent(this,MainActivity.class);
+        mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(mainIntent);
+        finish();
     }
 
     @Override
