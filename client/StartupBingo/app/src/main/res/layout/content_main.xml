@@ -45,7 +45,7 @@
             android:id="@+id/main_page_hashtag_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <EditText
+            <android.support.design.widget.TextInputEditText
                 android:id="@+id/main_page_hashtag_edit_text"
                 android:imeOptions="actionNext"
                 android:singleLine="true"
@@ -61,7 +61,7 @@
             android:id="@+id/main_page_user_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <EditText
+            <android.support.design.widget.TextInputEditText
                 android:id="@+id/main_page_user_edit_text"
                 android:imeOptions="actionDone"
                 android:hint="@string/literal_username"

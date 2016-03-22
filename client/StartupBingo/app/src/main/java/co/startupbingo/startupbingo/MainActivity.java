@@ -2,6 +2,7 @@ package co.startupbingo.startupbingo;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -21,9 +22,14 @@ import com.github.nkzawa.socketio.client.Ack;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -32,7 +38,10 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.startupbingo.startupbingo.api.IApiClient;
+import co.startupbingo.startupbingo.api.ISocketClient;
+import co.startupbingo.startupbingo.api.RealSocketClient;
 import co.startupbingo.startupbingo.api.RestApiClient;
+import co.startupbingo.startupbingo.model.GameEvent;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -43,10 +52,12 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getName();
 
     @Inject IApiClient apiClient;
+    @Inject ISocketClient socketClient;
 
-    public Subscription wordListSubscription;
+    public Subscription joinRoomSubscription;
     public Socket socket;
 
+    @Bind(R.id.main_page_coordinator_layout) CoordinatorLayout mCoordinator;
     @Bind(R.id.main_page_random_text) TextView mRandomText;
     @Bind(R.id.main_page_hashtag_edit_text) EditText mHashText;
     @Bind(R.id.main_page_user_edit_text) EditText mUserText;
@@ -57,47 +68,40 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //Dagger injection stoof
         ((StartupBingo)getApplication()).getNetComponent().inject(this);
-
-        try {
-            Log.d(TAG,"Creating Socket");
-            IO.Options options = new IO.Options();
-            options.port = 3000;
-            socket = IO.socket("http://startupbingo.co",options);
-            Log.d(TAG, "Socket Created");
-            socket.connect();
-            Log.d(TAG, "Socket Connected");
-            socket.emit("test", "Hey Tylor");
-            Log.d(TAG,"Socket Test Emission");
-        } catch (Exception e){
-            //Probably think about logging this
-        }
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setupRandomText();
-        setupInputs();
         setupSubscriptions();
+        setupInputs();
     }
 
     @Override
     public void onDestroy(){
         super.onDestroy();
-        if (wordListSubscription!=null&&!wordListSubscription.isUnsubscribed()){
-            wordListSubscription.unsubscribe();
+        if (joinRoomSubscription != null && !joinRoomSubscription.isUnsubscribed()){
+            joinRoomSubscription.unsubscribe();
         }
     }
 
     private void setupSubscriptions() {
-        if (wordListSubscription!=null){
-            wordListSubscription.unsubscribe();
-        }
-        wordListSubscription = apiClient.getRandomizedWordList()
-                .subscribeOn(Schedulers.io())
-                .onBackpressureBuffer()
-                .retry(3)
-                .subscribe(n->{
-                    Log.d(TAG,n.associatedWord);
-                },e->{
-                    Log.e(TAG,"Word List Error",e);
+        joinRoomSubscription = socketClient.getObservableStream()
+                .filter(gameEvent -> gameEvent.gameStateEvent== GameEvent.GAME_STATE_EVENT.JOIN)
+                .subscribe(next->{
+                    if (next!=null) {
+                        Observable.from(next.returnedObjects).forEach(nextJSON-> {
+                            if (nextJSON != null && nextJSON instanceof JSONObject){
+                                try {
+                                    if (((JSONObject)nextJSON).getString("result").equals("true")){
+                                        transitionToGameScreen();
+                                    }
+                                } catch (JSONException e) {
+                                    Log.e(TAG,"JSON thing broke",e);
+                                }
+                            }
+                        });
+                    }
+                },err->{
+                    Log.e(TAG,"Join Room Error",err);
                 });
     }
 
@@ -111,8 +115,17 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
         mButtonLayout.setOnClickListener(v->{
-            transitionToGameScreen();
+            if (hashTagValid()){
+                socketClient.joinRoom(mHashText.getText().toString());
+            } else {
+                Snackbar.make(mCoordinator,"Form Has Errors", Snackbar.LENGTH_SHORT).show();
+            }
         });
+    }
+
+    private boolean hashTagValid() {
+        return mHashText!=null&&!mHashText.getText().toString().isEmpty()
+                &&mUserText!=null&&!mUserText.getText().toString().isEmpty();
     }
 
     private void transitionToGameScreen() {

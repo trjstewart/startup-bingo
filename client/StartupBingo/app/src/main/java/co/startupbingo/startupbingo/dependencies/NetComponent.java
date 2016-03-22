@@ -7,6 +7,7 @@ import co.startupbingo.startupbingo.GameActivityFragment;
 import co.startupbingo.startupbingo.GameActivityOverFragment;
 import co.startupbingo.startupbingo.LaunchActivity;
 import co.startupbingo.startupbingo.MainActivity;
+
 import dagger.Component;
 
 @Singleton

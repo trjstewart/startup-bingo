@@ -19,9 +19,11 @@ import okhttp3.OkHttpClient;
 @Module
 public class NetModule {
     String mBaseUrl;
+    public ISocketClient socketClient;
 
-    public NetModule(String baseUrl){
+    public NetModule(String baseUrl) {
         this.mBaseUrl = baseUrl;
+        this.socketClient = new RealSocketClient();
     }
 
     @Provides
@@ -46,15 +48,16 @@ public class NetModule {
 
     @Provides
     @Singleton
-    IApiClient provideApiClient(OkHttpClient httpClient){
+    IApiClient provideApiClient(OkHttpClient httpClient) {
         return new RestApiClient.Builder()
                 .baseUrl(mBaseUrl)
                 .okHttpClient(httpClient)
                 .build();
     }
+
     @Provides
     @Singleton
-    ISocketClient provideSocketClient(){
-        return new RealSocketClient();
+    ISocketClient provideSocketClient() {
+        return this.socketClient;
     }
 }
