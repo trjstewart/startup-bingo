@@ -66,7 +66,7 @@ public class RestApiClient implements IApiClient {
                         .url(httpUrl)
                         .get()
                         .build();
-                Response response =httpClient.newCall(httpRequest).execute();
+                Response response = httpClient.newCall(httpRequest).execute();
                 if (response.isSuccessful()){
                     GsonBuilder gsonBuilder = new GsonBuilder();
                     gsonBuilder.registerTypeAdapter(Word[].class, new WordListDeserializer());

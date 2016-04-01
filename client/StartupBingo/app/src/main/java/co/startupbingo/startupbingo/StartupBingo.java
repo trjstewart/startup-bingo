@@ -17,8 +17,10 @@ public class StartupBingo extends Application {
 
         mNetComponent = DaggerNetComponent.builder()
                 .appModule(new AppModule(this))
-                .netModule(new NetModule("startupbingo.co"))
+                .netModule(new NetModule("153.92.44.24"))
                 .build();
+        //baedit IP: 153.92.44.24
+        //prod server: startupbingo.co
     }
 
     public NetComponent getNetComponent(){

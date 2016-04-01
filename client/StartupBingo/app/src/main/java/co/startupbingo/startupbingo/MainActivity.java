@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                 .subscribe(next->{
                     if (next!=null) {
                         Observable.from(next.returnedObjects).forEach(nextJSON-> {
-                            if (nextJSON != null && nextJSON instanceof JSONObject){
+                            if (nextJSON != null && nextJSON instanceof JSONObject) {
                                 try {
                                     if (((JSONObject)nextJSON).getString("result").equals("true")){
                                         transitionToGameScreen();

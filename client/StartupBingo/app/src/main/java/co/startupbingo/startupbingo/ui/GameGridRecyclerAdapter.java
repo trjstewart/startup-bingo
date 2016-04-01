@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -47,12 +48,16 @@ public class GameGridRecyclerAdapter extends RecyclerView.Adapter<GameGridRecycl
         Word currentWord = wordArrayList.get(position);
         holder.tileLayout.setBackgroundColor(currentWord.isChecked?
                         ContextCompat.getColor(mContext,R.color.colorAccent):
-                        ContextCompat.getColor(mContext,R.color.transparent));
+                        ContextCompat.getColor(mContext,R.color.colorPrimaryDark));
+        holder.tileTextView.setTextColor(currentWord.isChecked?
+                ContextCompat.getColor(mContext,android.R.color.primary_text_light):
+                ContextCompat.getColor(mContext,android.R.color.primary_text_dark)
+        );
         holder.tileTextView.setText(currentWord.getTileString());
-        holder.tileClickLayout.setOnClickListener(v->{
+        holder.tileClickLayout.setOnClickListener(v-> {
             if (mListener!=null){
                 mListener.onClickTile(currentWord,position);
-                currentWord.isChecked=true;
+                currentWord.isChecked= !currentWord.isChecked;
                 notifyItemChanged(position);
             }
         });
@@ -70,13 +75,13 @@ public class GameGridRecyclerAdapter extends RecyclerView.Adapter<GameGridRecycl
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        public SquareGameTileLayout tileLayout;
+        public RelativeLayout tileLayout;
         public RelativeLayout tileClickLayout;
         public TextView tileTextView;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            tileLayout = (SquareGameTileLayout)itemView.findViewById(R.id.game_tile_base_layout);
+            tileLayout = (RelativeLayout)itemView.findViewById(R.id.game_tile_base_layout);
             tileClickLayout = (RelativeLayout)itemView.findViewById(R.id.game_tile_click_layout);
             tileTextView = (TextView)itemView.findViewById(R.id.game_tile_text_view);
         }

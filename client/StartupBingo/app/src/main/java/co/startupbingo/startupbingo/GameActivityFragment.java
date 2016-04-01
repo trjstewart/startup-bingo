@@ -7,6 +7,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.startupbingo.startupbingo.api.IApiClient;
+import co.startupbingo.startupbingo.api.ISocketClient;
+import co.startupbingo.startupbingo.model.GameEvent;
 import co.startupbingo.startupbingo.model.Word;
 import co.startupbingo.startupbingo.ui.GameGridRecyclerAdapter;
 import rx.Observable;
@@ -25,7 +28,9 @@ import rx.Observable;
  */
 public class GameActivityFragment extends Fragment implements GameGridRecyclerAdapter.GameGridRecyclerEvents {
 
+    private static final String TAG = GameActivityFragment.class.getName();
     @Inject IApiClient apiClient;
+    @Inject ISocketClient socketClient;
     @Bind(R.id.fragment_game_recycler) RecyclerView mRecycler;
     Context mContext;
     GameGridRecyclerAdapter mAdapter;
@@ -64,10 +69,17 @@ public class GameActivityFragment extends Fragment implements GameGridRecyclerAd
             mAdapter.setOnEventsListener(this);
         }
         mRecycler.setAdapter(mAdapter);
+        socketClient.getObservableStream()
+                .filter(ge->ge.gameStateEvent== GameEvent.GAME_STATE_EVENT.WORDS)
+                .subscribe(n->{
+                    Log.d(TAG,"Got Word List");
+                },e->{
 
-        Observable.range(0,25)
-                .map(i->new Word(String.valueOf(i)))
-                .doOnNext(mAdapter::addWord).subscribe();
+                });
+        socketClient.getObservableWords()
+                .subscribe(mAdapter::addWord,e->{
+                    Log.e(TAG,"Word Subject Error",e);
+                });
     }
 
     @Override

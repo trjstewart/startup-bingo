@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import javax.inject.Inject;
 
 import co.startupbingo.startupbingo.api.IApiClient;
+import co.startupbingo.startupbingo.game.IGameThread;
 
 public class GameActivity extends AppCompatActivity{
 

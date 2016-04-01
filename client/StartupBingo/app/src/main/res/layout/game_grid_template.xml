@@ -3,23 +3,31 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/game_tile_base_layout"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/white"
+    android:padding="1dp"
+    >
     <RelativeLayout
-        android:clickable="true"
-        android:background="?android:attr/selectableItemBackground"
-        android:id="@+id/game_tile_click_layout"
-        android:layout_centerInParent="true"
+        android:id="@+id/game_tile_base_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <TextView
-            tools:text="Startup"
+        <RelativeLayout
+            android:clickable="true"
+            android:background="?android:attr/selectableItemBackground"
+            android:id="@+id/game_tile_click_layout"
             android:layout_centerInParent="true"
-            android:gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:ellipsize="end"
-            android:id="@+id/game_tile_text_view"
-            android:textAlignment="gravity" />
+            android:layout_height="match_parent">
+            <TextView
+                tools:text="Startup"
+                android:textSize="11sp"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ellipsize="end"
+                android:id="@+id/game_tile_text_view"
+                android:textAlignment="gravity" />
+        </RelativeLayout>
     </RelativeLayout>
 </co.startupbingo.startupbingo.ui.SquareGameTileLayout>

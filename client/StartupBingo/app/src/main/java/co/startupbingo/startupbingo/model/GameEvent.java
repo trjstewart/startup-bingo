@@ -7,6 +7,7 @@ public class GameEvent {
 
     public enum GAME_STATE_EVENT{
         JOIN,
+        WORDS,
         FINISHED
     }
 
