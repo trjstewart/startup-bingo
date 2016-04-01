@@ -24,7 +24,7 @@ module.exports = function (io) {
 
         socket.on('words', function(sock){
             var arrOfWords = [], nOfWords = 25;
-            console.log('request received from ' + id);
+            console.log('request received from ' + sock.id);
             fs.readFile('database.json', 'utf8', function(err, data){
                 if(err) console.error(err);
                 var obj = JSON.parse(data);
