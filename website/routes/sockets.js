@@ -5,6 +5,19 @@ module.exports = function (io) {
         console.slack('Someone Created a Socket! Was it Jubb?');
         //var id = socket.id;
         console.log('client id joined: ' + socket.id);
+        var arrOfWords = [], nOfWords = 25;
+            //console.log('request received from ' + sock.id);
+            fs.readFile('database.json', 'utf8', function(err, data){
+                if(err) console.error(err);
+                var obj = JSON.parse(data);
+                for(var i=0;i<obj["word-list"].length;i++){
+                    arrOfWords.push(obj["word-list"][i].word)
+                }
+                var g = getWords(arrOfWords, nOfWords);
+                console.log(g);
+                io.to(socket.id).emit({status: 200, data:g});
+            });
+
 
         //io.to(id).emit('words', {words: ['R A R E', 'S C R A P E']});
 
@@ -22,20 +35,21 @@ module.exports = function (io) {
             }
         });
 
-        socket.on('words', function(){
-            var arrOfWords = [], nOfWords = 25;
-            //console.log('request received from ' + sock.id);
-            fs.readFile('database.json', 'utf8', function(err, data){
-                if(err) console.error(err);
-                var obj = JSON.parse(data);
-                for(var i=0;i<obj["word-list"].length;i++){
-                    arrOfWords.push(obj["word-list"][i].word)
-                }
-                var g = getWords(arrOfWords, nOfWords);
-                //console.log('sending words to: ' + sock.id);
-                io.to(socket.id).emit({status: 200, data:g});
-            })
-        });
+        //socket.on('words', function(){
+        //    var arrOfWords = [], nOfWords = 25;
+        //    //console.log('request received from ' + sock.id);
+        //    fs.readFile('database.json', 'utf8', function(err, data){
+        //        if(err) console.error(err);
+        //        var obj = JSON.parse(data);
+        //        for(var i=0;i<obj["word-list"].length;i++){
+        //            arrOfWords.push(obj["word-list"][i].word)
+        //        }
+        //        var g = getWords(arrOfWords, nOfWords);
+        //        //console.log('sending words to: ' + sock.id);
+        //        console.log(g);
+        //        io.to(socket.id).emit({status: 200, data:g});
+        //    })
+        //});
 
     });
 };
