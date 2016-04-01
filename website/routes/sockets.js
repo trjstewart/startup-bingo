@@ -24,13 +24,15 @@ module.exports = function (io) {
 
         socket.on('words', function(){
             var arrOfWords = [], nOfWords = 25;
+            console.log('request received');
             fs.readFile('database.json', 'utf8', function(err, data){
                 if(err) console.error(err);
                 var obj = JSON.parse(data);
                 for(var i=0;i<obj["word-list"].length;i++){
                     arrOfWords.push(obj["word-list"][i].word)
                 }
-                io.to(id).emit({status: 200, data:getWords(arrOfWords,25)});
+                var g = getWords(arrOfWords, nOfWords);
+                io.to(id).emit({status: 200, data:g});
             })
         });
 
