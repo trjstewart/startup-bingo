@@ -22,9 +22,9 @@ module.exports = function (io) {
             }
         });
 
-        socket.on('words', function(sock){
+        socket.on('words', function(){
             var arrOfWords = [], nOfWords = 25;
-            console.log('request received from ' + sock.id);
+            //console.log('request received from ' + sock.id);
             fs.readFile('database.json', 'utf8', function(err, data){
                 if(err) console.error(err);
                 var obj = JSON.parse(data);
@@ -32,8 +32,8 @@ module.exports = function (io) {
                     arrOfWords.push(obj["word-list"][i].word)
                 }
                 var g = getWords(arrOfWords, nOfWords);
-                console.log('sending words to: ' + sock.id);
-                io.to(sock.id).emit({status: 200, data:g});
+                //console.log('sending words to: ' + sock.id);
+                io.to(socket.id).emit({status: 200, data:g});
             })
         });
 
