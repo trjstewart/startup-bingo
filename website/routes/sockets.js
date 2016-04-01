@@ -3,8 +3,8 @@ var fs = require('fs');
 module.exports = function (io) {
     io.sockets.on('connection', function(socket) {
         console.slack('Someone Created a Socket! Was it Jubb?');
-        var id = socket.id;
-        console.log('client id joined: ' + id);
+        //var id = socket.id;
+        console.log('client id joined: ' + socket.id);
 
         //io.to(id).emit('words', {words: ['R A R E', 'S C R A P E']});
 
@@ -22,7 +22,7 @@ module.exports = function (io) {
             }
         });
 
-        socket.on('words', function(socket){
+        socket.on('words', function(sock){
             var arrOfWords = [], nOfWords = 25;
             console.log('request received from ' + id);
             fs.readFile('database.json', 'utf8', function(err, data){
@@ -32,8 +32,8 @@ module.exports = function (io) {
                     arrOfWords.push(obj["word-list"][i].word)
                 }
                 var g = getWords(arrOfWords, nOfWords);
-                console.log('sending words to: ' + socket.id);
-                io.to(id).emit({status: 200, data:g});
+                console.log('sending words to: ' + sock.id);
+                io.to(sock.id).emit({status: 200, data:g});
             })
         });
 
