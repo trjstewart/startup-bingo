@@ -15,7 +15,7 @@ module.exports = function (io) {
                 }
                 var g = getWords(arrOfWords, nOfWords);
                 console.log(g);
-                io.to(socket.id).emit({status: 200, data:g});
+                io.to(socket.id).emit('words',{status: 200, data:g});
             });
 
 
