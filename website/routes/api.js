@@ -45,7 +45,7 @@ function getWords(arrOfWords, n){
   while(n--){
     var x = Math.floor(Math.random()*length);
     //console.log(x);
-    chosenWords[n] = arrOfWords[x in taken ? taken[x] : x ]
+    (n===12)? chosenWords[n] = 'swag' : chosenWords[n] = arrOfWords[x in taken ? taken[x] : x ];
     //console.log(chosenWords[n]);
     taken[x] = --length;
   }
