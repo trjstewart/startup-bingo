@@ -1,12 +1,33 @@
 var fs = require('fs');
+var Player = require('../libs/player.js');
+var players = {};
+var nOfWords = 25, winScore = 24;
 
 module.exports = function (io) {
     io.sockets.on('connection', function(socket) {
-        console.slack('Someone Created a Socket! Was it Jubb?');
-        //var id = socket.id;
+        //console.slack('Someone Created a Socket! Was it Jubb?');
         console.log('client id joined: ' + socket.id);
-        var arrOfWords = [], nOfWords = 25;
-            //console.log('request received from ' + sock.id);
+
+
+        socket.on('join_room', function(data) {
+            try {
+                data.toString();
+                var room = data.hashtag;
+                var username = data.username;
+                (room.charAt(0) === '#') ? room = room.substr(1) : null;//why is this here? client side plz b0ss
+                socket.join(room);
+                socket.room = room;
+                console.log('player ' + username + ' joined room ' + room);
+                players[socket.id] = new Player(username);
+                socket.emit('join_room', {result: true});
+            } catch(err) {
+                socket.emit('join_room', {result: false, err: err});
+            }
+        });
+
+        socket.on('words', function(){
+
+            var arrOfWords = [];
             fs.readFile('database.json', 'utf8', function(err, data){
                 if(err) console.error(err);
                 var obj = JSON.parse(data);
@@ -14,58 +35,37 @@ module.exports = function (io) {
                     arrOfWords.push(obj["word-list"][i].word)
                 }
                 var g = getWords(arrOfWords, nOfWords);
-                console.log(g);
                 io.to(socket.id).emit('words',{status: 200, data:g});
             });
 
-
-        //io.to(id).emit('words', {words: ['R A R E', 'S C R A P E']});
-
-        socket.on('test', function () { console.slack('Wait! Did that bush move? :O'); });
-
-        socket.on('join_room', function(room) {
-            try {
-                room.toString();
-                (room.charAt(0) === '#') ? room = room.substr(1) : null;
-                socket.join(room);
-                console.slack('Someone just joined room: #' + room);
-                socket.emit('join_room', {result: true});
-            } catch(err) {
-                socket.emit('join_room', {result: false, err: err});
-            }
         });
 
-        //socket.on('words', function(){
-        //    var arrOfWords = [], nOfWords = 25;
-        //    //console.log('request received from ' + sock.id);
-        //    fs.readFile('database.json', 'utf8', function(err, data){
-        //        if(err) console.error(err);
-        //        var obj = JSON.parse(data);
-        //        for(var i=0;i<obj["word-list"].length;i++){
-        //            arrOfWords.push(obj["word-list"][i].word)
-        //        }
-        //        var g = getWords(arrOfWords, nOfWords);
-        //        //console.log('sending words to: ' + sock.id);
-        //        console.log(g);
-        //        io.to(socket.id).emit({status: 200, data:g});
-        //    })
-        //});
+        socket.on('disconnect', function(){
+           delete players[socket.id];
+            console.log(players);
+        });
+
+        socket.on('word-found', function(word){
+            players[socket.id].wordsFound++;
+            if(players[socket.id].wordsFound >= winScore){
+                players[socket.id].wins++;
+                socket.to(socket.room).emit('oh-fuck', {winner: players[socket.id].userName, wins: players[socket.id].wins});
+            }
+
+        });
+
+
+
+
 
     });
 };
 
-
 /*
-var arrOfWords =[], nOfWords = 25;
-fs.readFile('database.json', 'utf8', function (err, data) {
-    var obj = JSON.parse(data);
-    if (err) res.send(err)
-    for(var i=0;i<obj["word-list"].length;i++){
-        arrOfWords.push(obj["word-list"][i].word)
-    }
-    var w = getWords(arrOfWords, nOfWords);
-    res.send({status:200, data: w});
-});*/
+track individual
+track score
+unique username // nah fuk dat errybody named dankherb420 now
+ */
 
 function getWords(arrOfWords, n){
     var chosenWords = [], length = arrOfWords.length, taken = [], temp =[];
@@ -76,11 +76,9 @@ function getWords(arrOfWords, n){
 
     while(n--){
         var x = Math.floor(Math.random()*length);
-        //console.log(x);
         (n===12)? chosenWords[n] = 'S W A G  L O R D' : chosenWords[n] = arrOfWords[x in taken ? taken[x] : x ];
-
-        //console.log(chosenWords[n]);
         taken[x] = --length;
     }
     return chosenWords
 }
+

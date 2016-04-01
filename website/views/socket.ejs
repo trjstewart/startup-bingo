@@ -1,0 +1,82 @@
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
+    <script>
+        var socket = io('http://localhost/');
+    </script>
+    <style>
+        body {
+            padding-top: 50px;
+            padding-bottom: 20px;
+        }
+    </style>
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/main.css">
+
+    <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+</head>
+<body>
+<!--[if lt IE 8]>
+
+<p class="browserupgrade">filthy ie user gtfo</p>
+<![endif]-->
+
+<form id="roomSubmit">
+    which room b0ss: <input type="text" id="name" name="name"><br>
+    which name b0ss: <input type="text" id="room" name="room"><br>
+    <input type="submit" value="Submit">
+</form>
+
+
+<!-- /container -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+
+<script src="js/vendor/bootstrap.min.js"></script>
+
+<script src="js/plugins.js"></script>
+
+<script>
+
+    var words;
+
+    $("#roomSubmit").submit(function (event) {
+        event.preventDefault();
+        var name = $("#name").val();
+        var room = $("#room").val();
+        console.log(name);
+        console.log(room);
+
+        socket.emit('join_room', {hashtag: room, username: name});
+        socket.emit('words');
+    });
+
+    socket.on('words', function (data) {
+//        console.log(data);
+        words = data.data;
+    });
+
+    var tag = 'name';
+    var uName = 'khan';
+
+
+    socket.on('join_room', function (data) {
+        console.log(data);
+
+    });
+
+
+</script>
+
+</body>
+</html>
