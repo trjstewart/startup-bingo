@@ -8,6 +8,16 @@ module.exports = function (io) {
         //console.slack('Someone Created a Socket! Was it Jubb?');
         console.log('client id joined: ' + socket.id);
 
+        var arrOfWords = [];
+        fs.readFile('database.json', 'utf8', function(err, data){
+            if(err) console.error(err);
+            var obj = JSON.parse(data);
+            for(var i=0;i<obj["word-list"].length;i++){
+                arrOfWords.push(obj["word-list"][i].word)
+            }
+            var g = getWords(arrOfWords, nOfWords);
+            io.to(socket.id).emit('words',{status: 200, data:g});
+        });
 
         socket.on('join_room', function(data) {
             try {
@@ -25,20 +35,7 @@ module.exports = function (io) {
             }
         });
 
-        socket.on('words', function(){
 
-            var arrOfWords = [];
-            fs.readFile('database.json', 'utf8', function(err, data){
-                if(err) console.error(err);
-                var obj = JSON.parse(data);
-                for(var i=0;i<obj["word-list"].length;i++){
-                    arrOfWords.push(obj["word-list"][i].word)
-                }
-                var g = getWords(arrOfWords, nOfWords);
-                io.to(socket.id).emit('words',{status: 200, data:g});
-            });
-
-        });
 
         socket.on('disconnect', function(){
            delete players[socket.id];
@@ -46,12 +43,17 @@ module.exports = function (io) {
         });
 
         socket.on('word-found', function(word){
-            players[socket.id].wordsFound++;
-            if(players[socket.id].wordsFound >= winScore){
-                players[socket.id].wins++;
-                socket.to(socket.room).emit('oh-fuck', {winner: players[socket.id].userName, wins: players[socket.id].wins});
-            }
+            if(!(players[socket.id].wordsFound.indexOf(word)>-1)){
+                players[socket.id].wordsFound.push(word);
 
+                io.sockets.in(socket.room).emit('player-found-word', {user: players[socket.id].userName, word: word});
+                if(players[socket.id].wordsFound.length >= winScore){
+                    players[socket.id].wins++;
+                    io.sockets.in(socket.room).emit('oh-fuck', {winner: players[socket.id].userName, wins: players[socket.id].wins});
+                }
+            }else{
+                console.log('word already in');
+            }
         });
 
 

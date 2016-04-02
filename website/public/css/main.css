@@ -258,3 +258,23 @@
         .counter-container h1{ font-size:2em;   }
 
     }
+
+/* bingo shit dawg */
+
+.words-container{
+}
+
+.word{
+    width:150px;
+    height:150px;
+    background-color: #70C1B3;
+}
+
+.word:hover{
+    background-color: #247BA0;
+}
+
+.words-row{
+    width:100vw;
+    max-width: 100%;
+}

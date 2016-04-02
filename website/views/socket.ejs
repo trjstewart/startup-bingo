@@ -37,6 +37,10 @@
     <input type="submit" value="Submit">
 </form>
 
+<div class="words-container">
+
+</div>
+
 
 <!-- /container -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -49,6 +53,8 @@
 <script>
 
     var words;
+    var tag = 'name';
+    var uName = 'khan';
 
     $("#roomSubmit").submit(function (event) {
         event.preventDefault();
@@ -56,24 +62,44 @@
         var room = $("#room").val();
         console.log(name);
         console.log(room);
-
         socket.emit('join_room', {hashtag: room, username: name});
-        socket.emit('words');
+
     });
 
     socket.on('words', function (data) {
-//        console.log(data);
+        console.log(data);
         words = data.data;
+        insertBingoBoard(words);
     });
-
-    var tag = 'name';
-    var uName = 'khan';
-
 
     socket.on('join_room', function (data) {
         console.log(data);
+    });
+
+    function insertBingoBoard(words){
+        var temp;
+        for(var i=0;i<words.length;i++){
+            if(!(i%5)){
+                temp = i;
+                $("<div class='row words-row "+i+"'></div>").appendTo(".words-container");
+            }
+            var d = "<div class='word col-md-2'>"+words[i]+"</div> ";
+            $(d).appendTo("."+temp+"");
+        }
+
+    }
+
+    $('body').on('click', '.word', function(){
+        var text =$(this).text();
+        console.log(text);
+        socket.emit('word-found', text);
 
     });
+
+    socket.on('player-found-word', function(data){
+       console.log(data);
+    });
+
 
 
 </script>
