@@ -63,7 +63,7 @@
         console.log(name);
         console.log(room);
         socket.emit('join_room', {hashtag: room, username: name});
-
+        socket.emit('words');
     });
 
     socket.on('words', function (data) {
@@ -79,7 +79,7 @@
     function insertBingoBoard(words){
         var temp;
         for(var i=0;i<words.length;i++){
-            if(!(i%5)){
+            if(!(i%4)){
                 temp = i;
                 $("<div class='row words-row "+i+"'></div>").appendTo(".words-container");
             }
