@@ -31,16 +31,32 @@
 <p class="browserupgrade">filthy ie user gtfo</p>
 <![endif]-->
 
-<form id="roomSubmit">
-    which room b0ss: <input type="text" id="name" name="name"><br>
-    which name b0ss: <input type="text" id="room" name="room"><br>
-    <input type="submit" value="Submit">
-</form>
 
-<div class="words-container">
+<div class="left">
+
+    <div class="room-select">
+        <form id="roomSubmit">
+            <input type="text" id="name" name="name" placeholder="Username eg. 420 blaze lord supreme"><br>
+            <input type="text" id="room" name="room" placeholder="Event name eg. creative event or something"><br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+    <div class="words-container">
+
+    </div>
+
 
 </div>
 
+<div class="right">
+    <div class="events-log">
+
+    </div>
+    <form id="message-submit">
+        <input id="m" type="sub" autocomplete="off" /><input type="submit" value="Submit">
+    </form>
+</div>
 
 <!-- /container -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -58,12 +74,23 @@
 
     $("#roomSubmit").submit(function (event) {
         event.preventDefault();
+        $(this).fadeOut();
         var name = $("#name").val();
         var room = $("#room").val();
-        console.log(name);
-        console.log(room);
         socket.emit('join_room', {hashtag: room, username: name});
         socket.emit('words');
+    });
+
+    $('#message-submit').submit(function(event){
+       event.preventDefault();
+        var message = $("#m").val();
+
+        if(message.substring(0,2)==='./'){
+            console.log('you trying some cheeky shit mate?');
+            //never made a cheeky chat thingo b4 plz b gentle
+        }
+
+        socket.emit('message', message);
     });
 
     socket.on('words', function (data) {
@@ -76,6 +103,19 @@
         console.log(data);
     });
 
+    //data recieved {user: players[socket.id].userName, word: word}
+    socket.on('player-found-word', function(data){
+        printToLog(data.user+' found '+ data.word );
+    });
+
+    socket.on('player-joined', function(data){
+        printToLog('<strong> Player '+data+' joined </strong>');
+    });
+
+    socket.on('message', function(message){
+       printToLog('<strong>'+message.user+':</strong> '+message.message);
+    });
+
     function insertBingoBoard(words){
         var temp;
         for(var i=0;i<words.length;i++){
@@ -83,22 +123,38 @@
                 temp = i;
                 $("<div class='row words-row "+i+"'></div>").appendTo(".words-container");
             }
-            var d = "<div class='word col-md-2'>"+words[i]+"</div> ";
-            $(d).appendTo("."+temp+"");
+            var d = "<div class='word col-md-2'><p>"+words[i]+"</p></div> ";
+            $(d).hide().appendTo("."+temp+"").fadeIn(500);
         }
 
     }
 
+
+    //on bingo square click
     $('body').on('click', '.word', function(){
         var text =$(this).text();
-        console.log(text);
+        printToLog(text);
         socket.emit('word-found', text);
+        $(this).addClass('word-clicked');
 
     });
 
-    socket.on('player-found-word', function(data){
-       console.log(data);
-    });
+
+
+    function printToLog(string){
+        $('<p>'+string+'</p>').hide().appendTo(".events-log").fadeIn(500);
+        updateLogScroll();
+    }
+
+
+    function updateLogScroll(){
+        $('.events-log').stop().animate({
+            scrollTop: $('.events-log')[0].scrollHeight
+        }, 800);
+    }
+
+
+
 
 
 

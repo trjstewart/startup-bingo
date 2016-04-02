@@ -261,20 +261,114 @@
 
 /* bingo shit dawg */
 
+.left{
+    width:75vw;
+    max-width:75%;
+    height: 100vh;
+    max-height:100%;
+    background-color: #70C1B3;
+    float: left;
+    display: table-cell;
+    text-align: center;
+}
+
+.room-select{
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
 .words-container{
+    width: 60%;
+    margin: auto;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .word{
     width:150px;
     height:150px;
-    background-color: #70C1B3;
+    background-color: #C0FDFB;
+    margin: 2px;
+}
+
+.word p {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0;
 }
 
 .word:hover{
-    background-color: #247BA0;
+    background-color: #55828b;
+}
+
+.word-clicked{
+    background-color: #55828b;
 }
 
 .words-row{
     width:100vw;
     max-width: 100%;
 }
+
+input {
+    width:500px;
+    border: 5px solid white;
+    -webkit-box-shadow:
+            inset 0 0 8px  rgba(0,0,0,0.1),
+            0 0 16px rgba(0,0,0,0.1);
+    -moz-box-shadow:
+            inset 0 0 8px  rgba(0,0,0,0.1),
+            0 0 16px rgba(0,0,0,0.1);
+    box-shadow:
+            inset 0 0 8px  rgba(0,0,0,0.1),
+            0 0 16px rgba(0,0,0,0.1);
+    padding: 15px;
+    background: rgba(255,255,255,0.5);
+    margin: 0 0 10px 0;
+}
+
+input[type=submit] {
+    width:250px;
+}
+
+.right{
+    width:25vw;
+    max-width:25%;
+    height:100vh;
+    max-height:100%;
+    background: #247BA0;
+    float: right;
+}
+
+.right input{
+    width:60%;
+}
+
+.right input[type=submit] {
+    width:40%;
+}
+
+.events-log{
+    width:100%;
+    height:90%;
+    overflow-y: scroll;
+    margin:auto;
+
+    padding: 20px;
+}
+.events-log p{
+    background-color: #3CC1AB;
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    border-radius:5px;
+    padding: 10px;
+}
+
+/*.server-message{*/
+    /*background-color:#FF0043;*/
+/*}*/
+
+
