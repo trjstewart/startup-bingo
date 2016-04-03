@@ -80,6 +80,10 @@ module.exports = function (io) {
             });
 
         });
+
+        socket.on('get-scores', function(){
+            io.to(socket.id).emit('scores',{status: 200, data:getLeadBoard()});
+        });
     });
 };
 
@@ -96,7 +100,7 @@ function getWords(arrOfWords, n){
     for(var i=0;i<n;i++){
         do{
             item = arrOfWords[Math.floor(Math.random()*arrOfWords.length)];
-        }while(t.indexOf(item) > -1)
+        }while(t.indexOf(item) > -1);
         t.push(item)
     }
     return t;
@@ -107,14 +111,12 @@ function getWords(arrOfWords, n){
 //will this work? WHO KNOWs?!!?!?!420
 function getLeadBoard(){
     var playerArray = Object.keys(players);
-    var leaderBoard = {};
+    var leaderBoard = [];
 
-    playerArray.sort(function(a, b){
-        return players[b] - players[a];
-    });
-
-    console.log(playerArray);
-
+    for(var i=0;i<playerArray.length;i++){
+        leaderBoard.push({username: players[playerArray[i]].userName, score: players[playerArray[i]].wins})
+    }
+    return leaderBoard;
 }
 
 

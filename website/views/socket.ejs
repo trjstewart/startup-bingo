@@ -18,7 +18,7 @@
 
 
     <script>
-        var socket = io('http://localhost/');
+        var socket = io('http://153.92.44.24/');
     </script>
     <style>
         body {
@@ -101,22 +101,31 @@
         event.preventDefault();
         var message = $("#m").val();
 
-        if(message.substring(0,2)==='./'){
-            console.log('you trying some cheeky shit mate?');
-            //never made a cheeky chat thingo b4 plz b gentle
-            var command = message.substring(2);
-            console.log(command);
-            switch(command){
-                case "baxter":
-                    console.log('baxterrr');
-                    message = '<img src="http://www.orionvm.com/wp-content/uploads/2014/10/headshots_orionvm_steve-baxter.jpg" alt="hi im steve" height="21" width="21">';
-                    break;
-            }
-            //more coming soon ;) ;) ;) ;) ;) ;)
+        if(/\S/.test(message)){
+            if(message.substring(0,2)==='./'){
+                console.log('you trying some cheeky shit mate?');
+                //never made a cheeky chat thingo b4 plz b gentle
+                var command = message.substring(2);
+                console.log(command);
+                switch(command){
+                    case "baxter":
+                        console.log('baxterrr');
+                        message = '<img src="http://www.orionvm.com/wp-content/uploads/2014/10/headshots_orionvm_steve-baxter.jpg" alt="hi im steve" height="21" width="21">';
+                        break;
+                    case "leaderboard":
+                        console.log('getting scores...');
+                        socket.emit('get-scores');
+                        break;
+                }
+                //more coming soon ;) ;) ;) ;) ;) ;)
 
+            }
+
+            $("#m").val('');
+
+            socket.emit('message', message);
         }
 
-        socket.emit('message', message);
     });
 
     /*
@@ -153,6 +162,13 @@
     });
 
     /*
+        gets current leaderboard
+    */
+    socket.on('scores', function(data){
+       console.log(data);
+    });
+
+    /*
         player joined socket event
      */
     socket.on('player-joined', function(data){
@@ -170,7 +186,7 @@
         winner found socket event
      */
     socket.on('winner-found', function(message){
-       printToLog(':fire::fire::fire: '+ message.winner  +' HAS WON THEIR BOARD :fire::fire::fire:')
+       printToLog(':fire: '+ message.winner  +' HAS WON THEIR BOARD :fire:')
     });
 
     /*
