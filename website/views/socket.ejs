@@ -78,6 +78,11 @@
     var tag = 'name';
     var uName = 'khan';
 
+    /*
+       Event handler for room submit form
+       currently no validation, will add later
+       emits join room, and words. words returns array of words for bingo board
+     */
     $("#roomSubmit").submit(function (event) {
         event.preventDefault();
         $(this).fadeOut();
@@ -86,6 +91,11 @@
         socket.emit('join_room', {hashtag: room, username: name});
         socket.emit('words');
     });
+
+    /*
+        Message submit event handler
+        some cheeky shiz right here lad ;)
+     */
 
     $('#message-submit').submit(function(event){
         event.preventDefault();
@@ -109,6 +119,9 @@
         socket.emit('message', message);
     });
 
+    /*
+        Bingo board event handler
+     */
     //on bingo square click
     $('body').on('click', '.word', function(){
         var text =$(this).text();
@@ -117,29 +130,61 @@
 
     });
 
+    /*
+        saves words to words var, could be useful later. displays bingo board
+     */
     socket.on('words', function (data) {
         console.log(data);
         words = data.data;
         insertBingoBoard(words);
     });
 
+
     socket.on('join_room', function (data) {
         console.log(data);
     });
 
+    /*
+        player found word socket event.
+     */
     //data recieved {user: players[socket.id].userName, word: word}
     socket.on('player-found-word', function(data){
         printToLog('<strong>'+data.user+' found '+ data.word +'</strong>');
     });
 
+    /*
+        player joined socket event
+     */
     socket.on('player-joined', function(data){
         printToLog('<strong> Player '+data+' joined </strong>');
     });
 
+    /*
+        message socket event
+     */
     socket.on('message', function(message){
-        printToLog('<strong>'+message.user+':</strong> '+emojify.replace(message.message));
+        printToLog('<strong>'+message.user+':</strong> '+message.message);
     });
 
+    /*
+        winner found socket event
+     */
+    socket.on('winner-found', function(message){
+       printToLog(':fire::fire::fire: '+ message.winner  +' HAS WON THEIR BOARD :fire::fire::fire:')
+    });
+
+    /*
+        restart game
+    */
+    socket.on('restart', function(){
+       $('.words-container').empty();
+        socket.emit('words');
+    });
+
+    /*
+        bingo board function.
+        Words: string array of words to display on board
+     */
     function insertBingoBoard(words){
         var temp;
         for(var i=0;i<words.length;i++){
@@ -153,12 +198,18 @@
 
     }
 
+    /*
+        Function which pints string input to message log
+        string: string which contains what to write
+     */
     function printToLog(string){
-        $('<p>'+string+'</p>').hide().appendTo(".events-log").fadeIn(500);
+        $('<p>'+emojify.replace(string)+'</p>').hide().appendTo(".events-log").fadeIn(500);
         updateLogScroll();
     }
 
-
+    /*
+        keeps scroll focused on bottom
+     */
     function updateLogScroll(){
         $('.events-log').stop().animate({
             scrollTop: $('.events-log')[0].scrollHeight

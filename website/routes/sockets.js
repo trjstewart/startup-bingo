@@ -4,7 +4,7 @@ var sanitizeHtml = require('sanitize-html'); //u cheeky bastards. god damn  hack
 
 
 var players = {};
-var nOfWords = 16, winScore = 15;
+var nOfWords = 16, winScore = nOfWords;//winscore is still here because size of board is undecided of yet. we may require a center empty tile
 var arrOfWords = [];
 
 module.exports = function (io) {
@@ -39,7 +39,7 @@ module.exports = function (io) {
         });
 
         socket.on('message', function(message){
-            console.slack('FUCK BOII SENT U A MESSAGE');
+            //console.slack('FUCK BOII SENT U A MESSAGE');
             var clean = sanitizeHtml(message, {
                 allowedTags: sanitizeHtml.defaults.allowedTags.concat([ 'img' ])
             });
@@ -52,7 +52,8 @@ module.exports = function (io) {
 
                 io.sockets.to(socket.room).emit('player-found-word', {user: players[socket.id].userName, word: word});
                 if(players[socket.id].wordsFound.length >= winScore){
-
+                    console.log('WINNERRR');
+                    players[socket.id].resetWordsFound();
                     players[socket.id].wins++;
                     io.sockets.in(socket.room).emit('winner-found', {winner: players[socket.id].userName, wins: players[socket.id].wins});
 
@@ -74,15 +75,11 @@ module.exports = function (io) {
                     arrOfWords.push(obj["word-list"][i].word)
                 }
                 var g = getWords(arrOfWords, nOfWords);
+                players[socket.id].words = g;
                 io.to(socket.id).emit('words',{status: 200, data:g});
             });
 
         });
-
-
-
-
-
     });
 };
 
@@ -93,19 +90,19 @@ module.exports = function (io) {
  */
 
 function getWords(arrOfWords, n){
-    var chosenWords = [], length = arrOfWords.length, taken = [], temp =[];
+    var shuffledArray = shuffle(arrOfWords);
+    var t = [], item;
 
-    if(n>arrOfWords.length){
-        throw new Error('fuck you doing son?');
+    for(var i=0;i<n;i++){
+        do{
+            item = arrOfWords[Math.floor(Math.random()*arrOfWords.length)];
+        }while(t.indexOf(item) > -1)
+        t.push(item)
     }
-
-    while(n--){
-        var x = Math.floor(Math.random()*length);
-        (n===12)? chosenWords[n] = 'S W A G  L O R D' : chosenWords[n] = arrOfWords[x in taken ? taken[x] : x ];
-        taken[x] = --length;
-    }
-    return chosenWords
+    return t;
 }
+
+
 
 //will this work? WHO KNOWs?!!?!?!420
 function getLeadBoard(){
@@ -120,3 +117,18 @@ function getLeadBoard(){
 
 }
 
+
+//fisher-yates shuffle
+function shuffle(array) {
+    var input = array;
+
+    for (var i = input.length-1; i >=0; i--) {
+
+        var randomIndex = Math.floor(Math.random()*(i+1));
+        var itemAtIndex = input[randomIndex];
+
+        input[randomIndex] = input[i];
+        input[i] = itemAtIndex;
+    }
+    return input;
+}
