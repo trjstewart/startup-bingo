@@ -27,7 +27,7 @@ module.exports = function (io) {
 
                 players[socket.id] = new Player(username);
                 socket.emit('join_room', {result: true});
-                io.sockets.in(socket.room).emit('player-joined', username);
+                io.sockets.in(room).emit('player-joined', username);
             } catch(err) {
                 socket.emit('join_room', {result: false, err: err});
             }
@@ -82,7 +82,7 @@ module.exports = function (io) {
         });
 
         socket.on('get-scores', function(){
-            io.to(socket.id).emit('scores',{status: 200, data:getLeadBoard()});
+            io.to(socket.id).emit('get-scores',{status: 200, data:getLeadBoard()});
         });
     });
 };
