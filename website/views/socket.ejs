@@ -11,6 +11,12 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
+
+    <!--DANK AS FUCK EMOJIS-->
+    <script src="/js/emojify.min.js"></script>
+
+
+
     <script>
         var socket = io('http://localhost/');
     </script>
@@ -82,15 +88,33 @@
     });
 
     $('#message-submit').submit(function(event){
-       event.preventDefault();
+        event.preventDefault();
         var message = $("#m").val();
 
         if(message.substring(0,2)==='./'){
             console.log('you trying some cheeky shit mate?');
             //never made a cheeky chat thingo b4 plz b gentle
+            var command = message.substring(2);
+            console.log(command);
+            switch(command){
+                case "baxter":
+                    console.log('baxterrr');
+                    message = '<img src="http://www.orionvm.com/wp-content/uploads/2014/10/headshots_orionvm_steve-baxter.jpg" alt="hi im steve" height="21" width="21">';
+                    break;
+            }
+            //more coming soon ;) ;) ;) ;) ;) ;)
+
         }
 
         socket.emit('message', message);
+    });
+
+    //on bingo square click
+    $('body').on('click', '.word', function(){
+        var text =$(this).text();
+        socket.emit('word-found', text);
+        $(this).addClass('word-clicked');
+
     });
 
     socket.on('words', function (data) {
@@ -105,7 +129,7 @@
 
     //data recieved {user: players[socket.id].userName, word: word}
     socket.on('player-found-word', function(data){
-        printToLog(data.user+' found '+ data.word );
+        printToLog('<strong>'+data.user+' found '+ data.word +'</strong>');
     });
 
     socket.on('player-joined', function(data){
@@ -113,7 +137,7 @@
     });
 
     socket.on('message', function(message){
-       printToLog('<strong>'+message.user+':</strong> '+message.message);
+        printToLog('<strong>'+message.user+':</strong> '+emojify.replace(message.message));
     });
 
     function insertBingoBoard(words){
@@ -128,18 +152,6 @@
         }
 
     }
-
-
-    //on bingo square click
-    $('body').on('click', '.word', function(){
-        var text =$(this).text();
-        printToLog(text);
-        socket.emit('word-found', text);
-        $(this).addClass('word-clicked');
-
-    });
-
-
 
     function printToLog(string){
         $('<p>'+string+'</p>').hide().appendTo(".events-log").fadeIn(500);

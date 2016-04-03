@@ -34,14 +34,16 @@ module.exports = function (io) {
         });
 
         socket.on('disconnect', function(){
-           delete players[socket.id];
+            delete players[socket.id];
             console.log(players);
         });
 
         socket.on('message', function(message){
             console.slack('FUCK BOII SENT U A MESSAGE');
-
-            io.sockets.in(socket.room).emit('message', {user: players[socket.id].userName, message: sanitizeHtml(message)});
+            var clean = sanitizeHtml(message, {
+                allowedTags: sanitizeHtml.defaults.allowedTags.concat([ 'img' ])
+            });
+            io.sockets.in(socket.room).emit('message', {user: players[socket.id].userName, message:clean});
         });
 
         socket.on('word-found', function(word){
@@ -85,9 +87,9 @@ module.exports = function (io) {
 };
 
 /*
-track individual
-track score
-unique username // nah fuk dat errybody named dankherb420 now
+ track individual
+ track score
+ unique username // nah fuk dat errybody named dankherb420 now
  */
 
 function getWords(arrOfWords, n){
