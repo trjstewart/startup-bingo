@@ -7,6 +7,12 @@ var players = {};
 var nOfWords = 16, winScore = nOfWords;//winscore is still here because size of board is undecided of yet. we may require a center empty tile
 var arrOfWords = [];
 
+
+/*
+ set max character limit x2
+ ban byron
+
+ */
 module.exports = function (io) {
     io.sockets.on('connection', function(socket) {
         //console.slack('Someone Created a Socket! Was it Jubb?');

@@ -102,10 +102,10 @@
         var message = $("#m").val();
 
         if(/\S/.test(message)){
-            if(message.substring(0,2)==='./'){
+            if (message.substring(0, 1) === '/') {
                 console.log('you trying some cheeky shit mate?');
                 //never made a cheeky chat thingo b4 plz b gentle
-                var command = message.substring(2);
+                var command = message.substring(1);
                 console.log(command);
                 switch(command){
                     case "baxter":
