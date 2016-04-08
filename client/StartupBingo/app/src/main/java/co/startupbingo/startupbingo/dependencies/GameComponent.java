@@ -2,13 +2,14 @@ package co.startupbingo.startupbingo.dependencies;
 
 import javax.inject.Singleton;
 
-import co.startupbingo.startupbingo.GameActivity;
-import dagger.Subcomponent;
+import co.startupbingo.startupbingo.GameActivityFragment;
+import co.startupbingo.startupbingo.game.IGameThread;
+import dagger.Component;
 
 @Singleton
-@Subcomponent(modules = {
+@Component(modules={
         GameModule.class
 })
 public interface GameComponent {
-    GameModule plus();
+    IGameThread gameThread();
 }

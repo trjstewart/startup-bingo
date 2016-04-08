@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import co.startupbingo.startupbingo.R;
+import co.startupbingo.startupbingo.model.ClearWord;
 import co.startupbingo.startupbingo.model.Word;
 import rx.Observable;
 
@@ -32,9 +33,20 @@ public class GameGridRecyclerAdapter extends RecyclerView.Adapter<GameGridRecycl
     }
 
     public boolean addWord(Word newWord) {
-        wordArrayList.add(newWord);
-        notifyItemInserted(getItemCount());
-        return true;
+        if (newWord instanceof ClearWord){
+            clearWords();
+            return false;
+        } else {
+            wordArrayList.add(newWord);
+            notifyItemInserted(getItemCount());
+            return true;
+        }
+    }
+
+    private void clearWords() {
+        int length = wordArrayList.size();
+        wordArrayList.clear();
+        notifyItemRangeRemoved(0,length);
     }
 
     @Override
@@ -55,7 +67,7 @@ public class GameGridRecyclerAdapter extends RecyclerView.Adapter<GameGridRecycl
         );
         holder.tileTextView.setText(currentWord.getTileString());
         holder.tileClickLayout.setOnClickListener(v-> {
-            if (mListener!=null){
+            if (mListener!=null) {
                 mListener.onClickTile(currentWord,position);
                 currentWord.isChecked= !currentWord.isChecked;
                 notifyItemChanged(position);
@@ -73,7 +85,7 @@ public class GameGridRecyclerAdapter extends RecyclerView.Adapter<GameGridRecycl
         void onLongClickTile(Word selectedTile, int pos);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         public RelativeLayout tileLayout;
         public RelativeLayout tileClickLayout;

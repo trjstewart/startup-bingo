@@ -5,11 +5,13 @@ import com.github.nkzawa.socketio.client.Socket;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 
 import co.startupbingo.startupbingo.api.deserializers.WordListDeserializer;
+import co.startupbingo.startupbingo.model.ClearWord;
 import co.startupbingo.startupbingo.model.GameEvent;
 import co.startupbingo.startupbingo.model.Word;
 import rx.Observable;
@@ -23,14 +25,14 @@ public class RealSocketClient implements ISocketClient {
     public String roomName;
     public boolean gameInProgress;
     public PublishSubject<GameEvent> gameEventStream = PublishSubject.create();
-    public ReplaySubject<Word> wordStream = ReplaySubject.create();
+    public PublishSubject<Word> wordStream = PublishSubject.create();
     public Socket mGameSocket;
 
     public RealSocketClient() {
         IO.Options options = new IO.Options();
         options.port=3000;
         try{
-            mGameSocket = IO.socket("http://153.92.44.24",options);
+            mGameSocket = IO.socket("http://swagme.me",options);
             setupSocketCallbacks();
             mGameSocket.connect();
         } catch (Exception e){
@@ -39,7 +41,7 @@ public class RealSocketClient implements ISocketClient {
     }
 
     private void setupSocketCallbacks() {
-        if (mGameSocket!=null){
+        if (mGameSocket!=null) {
             mGameSocket.on("join_room", f ->
                     gameEventStream.onNext(new GameEvent(GameEvent.GAME_STATE_EVENT.JOIN, f)));
             mGameSocket.on("game_finished",f->
@@ -55,6 +57,7 @@ public class RealSocketClient implements ISocketClient {
             gsonBuilder.registerTypeAdapter(Word[].class, new WordListDeserializer());
             Gson gson = gsonBuilder.create();
             Word[] words = gson.fromJson(f[0].toString(),Word[].class);
+            wordStream.onNext(new ClearWord("meme"));
             for(Word word : words) {
                 wordStream.onNext(word);
             }
@@ -64,6 +67,16 @@ public class RealSocketClient implements ISocketClient {
     @Override
     public Observable<Word> getObservableWords() {
         return wordStream!=null?wordStream.asObservable():null;
+    }
+
+    @Override
+    public void doWordThing() {
+        if (mGameSocket!=null) {
+            if (!mGameSocket.connected()) {
+                mGameSocket.connect();
+            }
+            mGameSocket.emit("words");
+        }
     }
 
     @Override
@@ -77,12 +90,20 @@ public class RealSocketClient implements ISocketClient {
     }
 
     @Override
-    public void joinRoom(String hashTag) {
-        if (mGameSocket!=null){
-            if (!mGameSocket.connected()) {
-                mGameSocket.connect();
+    public void joinRoom(String userName, String hashTag) {
+        try {
+            if (mGameSocket!=null){
+                if (!mGameSocket.connected()) {
+                    mGameSocket.connect();
+                }
+                JSONObject joinObject = new JSONObject()
+                        .put("hashtag",hashTag)
+                        .put("username",userName);
+
+                mGameSocket.emit("join_room",joinObject);
             }
-            mGameSocket.emit("join_room",hashTag);
+        } catch (Exception e) {
+
         }
     }
 

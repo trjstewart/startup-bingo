@@ -115,8 +115,8 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
         mButtonLayout.setOnClickListener(v->{
-            if (hashTagValid()){
-                socketClient.joinRoom(mHashText.getText().toString());
+            if (hashTagValid()) {
+                socketClient.joinRoom(mUserText.getText().toString(),mHashText.getText().toString());
             } else {
                 Snackbar.make(mCoordinator,"Form Has Errors", Snackbar.LENGTH_SHORT).show();
             }

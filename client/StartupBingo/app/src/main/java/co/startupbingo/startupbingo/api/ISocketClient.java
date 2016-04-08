@@ -11,6 +11,8 @@ public interface ISocketClient {
     Observable<GameEvent> getObservableStream();
     Observable<Word> getObservableWords();
     void connectToSocket();
-    void joinRoom(String hashTag);
+    void joinRoom(String userName, String hashTag);
     void winGame(String username);
+    void doWordThing();
+    void selectWord(Word selectedWord);
 }
