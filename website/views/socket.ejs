@@ -16,7 +16,6 @@
     <script src="/js/emojify.min.js"></script>
 
 
-
     <script>
         var socket = io('http://localhost/');
     </script>
@@ -37,32 +36,58 @@
 <p class="browserupgrade">filthy ie user gtfo</p>
 <![endif]-->
 
-
-<div class="left">
-
+<div class="top">
     <div class="room-select">
+
         <form id="roomSubmit">
             <input type="text" id="name" name="name" placeholder="Username eg. 420 blaze lord supreme"><br>
             <input type="text" id="room" name="room" placeholder="Event name eg. creative event or something"><br>
             <input type="submit" value="Submit">
         </form>
+        <div class="rs-error"></div>
     </div>
+
 
     <div class="words-container">
 
     </div>
+</div>
 
+<div class="console">
 
 </div>
 
-<div class="right">
-    <div class="events-log">
-
-    </div>
+<div class="input">
     <form id="message-submit">
-        <input id="m" type="sub" autocomplete="off" /><input type="submit" value="Submit">
+        <input id="m" type="sub" autocomplete="off"/><input type="submit" value="Submit">
     </form>
 </div>
+
+<!--<div class="left">-->
+
+<!--<div class="room-select">-->
+<!--<form id="roomSubmit">-->
+<!--<input type="text" id="name" name="name" placeholder="Username eg. 420 blaze lord supreme"><br>-->
+<!--<input type="text" id="room" name="room" placeholder="Event name eg. creative event or something"><br>-->
+<!--<input type="submit" value="Submit">-->
+<!--</form>-->
+<!--</div>-->
+
+<!--<div class="words-container">-->
+
+<!--</div>-->
+
+
+<!--</div>-->
+
+<!--<div class="right">-->
+<!--<div class="events-log">-->
+
+<!--</div>-->
+<!--<form id="message-submit">-->
+<!--<input id="m" type="sub" autocomplete="off" /><input type="submit" value="Submit">-->
+<!--</form>-->
+<!--</div>-->
 
 <!-- /container -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -74,40 +99,40 @@
 
 <script>
 
-    var words;
-    var tag = 'name';
-    var uName = 'khan';
+    var words,user;
+    $('.words-container').hide();
 
     /*
-       Event handler for room submit form
-       currently no validation, will add later
-       emits join room, and words. words returns array of words for bingo board
+     Event handler for room submit form
+     currently no validation, will add later
+     emits join room, and words. words returns array of words for bingo board
      */
+
     $("#roomSubmit").submit(function (event) {
         event.preventDefault();
-        $(this).fadeOut();
         var name = $("#name").val();
         var room = $("#room").val();
+        user = name;
         socket.emit('join_room', {hashtag: room, username: name});
-        socket.emit('words');
+
     });
 
     /*
-        Message submit event handler
-        some cheeky shiz right here lad ;)
+     Message submit event handler
+     some cheeky shiz right here lad ;)
      */
 
-    $('#message-submit').submit(function(event){
+    $('#message-submit').submit(function (event) {
         event.preventDefault();
         var message = $("#m").val();
 
-        if(/\S/.test(message)){
+        if (/\S/.test(message)) {
             if (message.substring(0, 1) === '/') {
                 console.log('you trying some cheeky shit mate?');
                 //never made a cheeky chat thingo b4 plz b gentle
                 var command = message.substring(1);
                 console.log(command);
-                switch(command){
+                switch (command) {
                     case "baxter":
                         console.log('baxterrr');
                         message = '<img src="http://www.orionvm.com/wp-content/uploads/2014/10/headshots_orionvm_steve-baxter.jpg" alt="hi im steve" height="21" width="21">';
@@ -115,7 +140,7 @@
                     case "leaderboard":
                         console.log('getting scores...');
                         socket.emit('get-scores');
-                        break;
+                        breakF
                 }
                 //more coming soon ;) ;) ;) ;) ;) ;)
 
@@ -129,18 +154,18 @@
     });
 
     /*
-        Bingo board event handler
+     Bingo board event handler
      */
     //on bingo square click
-    $('body').on('click', '.word', function(){
-        var text =$(this).text();
+    $('body').on('click', '.word', function () {
+        var text = $(this).text();
         socket.emit('word-found', text);
         $(this).addClass('word-clicked');
 
     });
 
     /*
-        saves words to words var, could be useful later. displays bingo board
+     saves words to words var, could be useful later. displays bingo board
      */
     socket.on('words', function (data) {
         console.log(data);
@@ -151,90 +176,129 @@
 
     socket.on('join_room', function (data) {
         console.log(data);
+
+        if(data.result){
+
+            $('.room-select').fadeOut();
+            socket.emit('words');
+            $('.words-container').fadeIn();
+        }else{
+            printToLogLocal('Username already exists!');
+        }
+
+
     });
 
     /*
-        player found word socket event.
+     player found word socket event.
      */
     //data recieved {user: players[socket.id].userName, word: word}
-    socket.on('player-found-word', function(data){
-        printToLog('<strong>'+data.user+' found '+ data.word +'</strong>');
+    socket.on('player-found-word', function (data) {
+        printToConsole('<strong>' + data.user + ' found ' + data.word + '</strong>', data.user);
     });
 
     /*
-        gets current leaderboard
-    */
-    socket.on('get-scores', function(data){
-       console.log(data);
-    });
-
-    /*
-        player joined socket event
+     gets current leaderboard
      */
-    socket.on('player-joined', function(data){
-        printToLog('<strong> Player '+data+' joined </strong>');
+    socket.on('get-scores', function (data) {
+        console.log(data.data);
+        printScores(data.data);
+
     });
 
     /*
-        message socket event
+     player joined socket event
      */
-    socket.on('message', function(message){
-        printToLog('<strong>'+message.user+':</strong> '+message.message);
+    socket.on('player-joined', function (data) {
+//        printToLogLocal('<strong> Player ' + data + ' joined </strong>');
+        printToConsole('<strong> Player ' + data + ' joined </strong>', data);
     });
 
     /*
-        winner found socket event
+     message socket event
      */
-    socket.on('winner-found', function(message){
-       printToLog(':fire: '+ message.winner  +' HAS WON THEIR BOARD :fire:')
+    socket.on('message', function (message) {
+//        (message.user===user) ? printToLogLocal('<strong>' + message.user + ':</strong> ' + message.message) : printToLogServer('<strong>' + message.user + ':</strong> ' + message.message);
+        printToConsole('<strong>' + message.user + ':</strong> ' + message.message, message.user);
+
     });
 
     /*
-        restart game
-    */
-    socket.on('restart', function(){
-       $('.words-container').empty();
+     winner found socket event
+     */
+    socket.on('winner-found', function (message) {
+        printToLogServer(':fire: ' + message.winner + ' HAS WON THEIR BOARD :fire:')
+    });
+
+    /*
+     restart game
+     */
+    socket.on('restart', function () {
+        $('.words-container').empty();
         socket.emit('words');
     });
 
     /*
-        bingo board function.
-        Words: string array of words to display on board
+     bingo board function.
+     Words: string array of words to display on board
      */
-    function insertBingoBoard(words){
+    function insertBingoBoard(words) {
         var temp;
-        for(var i=0;i<words.length;i++){
-            if(!(i%4)){
+        for (var i = 0; i < words.length; i++) {
+            if (!(i % 4)) {
                 temp = i;
-                $("<div class='row words-row "+i+"'></div>").appendTo(".words-container");
+                $("<div class='" + i + "'><div class='words-row'></div></div>").appendTo(".words-container");
             }
-            var d = "<div class='word col-md-2'><p>"+words[i]+"</p></div> ";
-            $(d).hide().appendTo("."+temp+"").fadeIn(500);
+            var d = "<div class='col-md-3 col-xs-3 col-sm-3 word'><p>" + words[i] + "</p></div> ";
+            $(d).hide().appendTo("." + temp + "").fadeIn(500);
         }
 
     }
 
     /*
-        Function which pints string input to message log
-        string: string which contains what to write
+     Function which pints string input to message log
+     string: string which contains what to write
      */
-    function printToLog(string){
-        $('<p>'+emojify.replace(string)+'</p>').hide().appendTo(".events-log").fadeIn(500);
+
+    function printToConsole(string, source){
+        (source===user)?printToLogLocal(string):printToLogServer(string);
+    }
+
+    function printToLogLocal(string) {
+        var t = (emojify.replace('<div class="local-m"><p>' + string + '</p></div><br>'))
+        console.log(t)
+
+        $(t).hide().appendTo(".console").fadeIn(500);
+        updateLogScroll();
+    }
+
+    function printToLogServer(string){
+                                                                    //BRRT BRRT BRRT
+        var t = emojify.replace('<div class="server-m"><p>' + string + '</p></div><br><br><br><br>')
+        console.log(t);
+        $(t).hide().appendTo(".console").fadeIn(500);
         updateLogScroll();
     }
 
     /*
-        keeps scroll focused on bottom
+     print scores
      */
-    function updateLogScroll(){
-        $('.events-log').stop().animate({
-            scrollTop: $('.events-log')[0].scrollHeight
-        }, 800);
+    function printScores(scores) {
+        var scoresDiv = '';
+        for (var i = 0; i < scores.length; i++) {
+            scoresDiv += scores[i].username + ' : ' + scores[i].score + '<br>';
+        }
+        printToLogLocal(scoresDiv);
     }
 
-
-
-
+    /*
+     keeps scroll focused on bottom
+     */
+    function updateLogScroll() {
+        $('.console').stop().animate({
+            scrollTop: $('.console')[0].scrollHeight
+        }, 800);
+    }
 
 
 </script>

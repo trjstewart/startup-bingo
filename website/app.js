@@ -26,21 +26,6 @@ mongoose.connect('mongodb://startupbingo:segS3K4Zd0gz@ds043991.mlab.com:43991/st
 //require('./models/emailoptin.model.js');
 
 var app = express();
-//var io = require('socket.io').listen(server);
-//io.sockets.on('connection', function(socket) {
-//  console.slack('Someone Created a Socket! Was it Jubb?');
-//
-//  socket.on('test', function () {
-//    console.slack('Well it worked...');
-//  });
-//
-//  socket.on('create', function(room) {
-//    socket.join(room);
-//  });
-//});
-
-
-
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
