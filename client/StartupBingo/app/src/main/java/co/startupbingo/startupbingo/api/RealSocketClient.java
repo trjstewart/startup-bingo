@@ -5,18 +5,16 @@ import com.github.nkzawa.socketio.client.Socket;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.net.URISyntaxException;
 
 import co.startupbingo.startupbingo.api.deserializers.WordListDeserializer;
 import co.startupbingo.startupbingo.model.ClearWord;
 import co.startupbingo.startupbingo.model.GameEvent;
+import co.startupbingo.startupbingo.model.Score;
+import co.startupbingo.startupbingo.model.User;
 import co.startupbingo.startupbingo.model.Word;
 import rx.Observable;
 import rx.subjects.PublishSubject;
-import rx.subjects.ReplaySubject;
 
 
 public class RealSocketClient implements ISocketClient {
@@ -27,6 +25,8 @@ public class RealSocketClient implements ISocketClient {
     public PublishSubject<GameEvent> gameEventStream = PublishSubject.create();
     public PublishSubject<Word> wordStream = PublishSubject.create();
     public Socket mGameSocket;
+    private Observable<Score> mScoreStream;
+    private User currentUser;
 
     public RealSocketClient() {
         IO.Options options = new IO.Options();
@@ -47,7 +47,33 @@ public class RealSocketClient implements ISocketClient {
             mGameSocket.on("game_finished",f->
                     gameEventStream.onNext(new GameEvent(GameEvent.GAME_STATE_EVENT.FINISHED,f)));
             mGameSocket.on("words",this::translateToWords);
+            mGameSocket.on("restart",this::reFetchWords);
+            mGameSocket.on("",this::translateToScores);
         }
+    }
+
+    @Override
+    public User getCurrentUser() {
+        return this.currentUser;
+    }
+
+    @Override
+    public void translateToScores(Object[] objects) {
+
+    }
+
+    @Override
+    public Observable<Score> getObservableScores(){
+        return mScoreStream.asObservable();
+    }
+
+    public void scoreThing(Object[] objects) {
+
+    }
+
+    @Override
+    public void reFetchWords(Object[] objects) {
+        this.doWordThing();
     }
 
     private void translateToWords(Object[] f) {
@@ -90,20 +116,45 @@ public class RealSocketClient implements ISocketClient {
     }
 
     @Override
-    public void joinRoom(String userName, String hashTag) {
+    public void joinRoom(User newUser) {
         try {
             if (mGameSocket!=null){
                 if (!mGameSocket.connected()) {
                     mGameSocket.connect();
                 }
                 JSONObject joinObject = new JSONObject()
-                        .put("hashtag",hashTag)
-                        .put("username",userName);
-
+                        .put("hashtag",newUser.userRoom)
+                        .put("username",newUser.userName);
                 mGameSocket.emit("join_room",joinObject);
+                currentUser = newUser;
             }
         } catch (Exception e) {
 
+        }
+    }
+
+    @Override
+    public void sendMessage(String message) {
+
+    }
+
+    @Override
+    public void emitEvent(String event, Object... objects) {
+
+    }
+
+    @Override
+    public void selectWord(Word selectedWord) {
+        try {
+            if (mGameSocket != null) {
+                if (!mGameSocket.connected()){
+                    mGameSocket.connect();
+                }
+                String wordToFind = selectedWord.associatedWord;
+                mGameSocket.emit("word-found",wordToFind);
+            }
+        } catch (Exception e){
+            //probs do something here ey ahaha
         }
     }
 

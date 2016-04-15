@@ -27,7 +27,7 @@ public class WordListDeserializer implements JsonDeserializer<Word[]> {
         }
         final JsonArray jsonWordArray = jsonObject.getAsJsonArray(Word.WORD_LIST_DATA);
         final Word[] wordArray = new Word[jsonWordArray.size()];
-        for (int i=0; i< wordArray.length; i++){
+        for (int i=0; i< wordArray.length; i++) {
             final JsonElement jsonWord = jsonWordArray.get(i);
             wordArray[i] = new Word(jsonWord.getAsString());
         }

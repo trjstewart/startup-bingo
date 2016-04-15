@@ -1,8 +1,10 @@
 package co.startupbingo.startupbingo;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +13,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import org.json.JSONObject;
 
 import javax.inject.Inject;
 
@@ -21,6 +26,7 @@ import co.startupbingo.startupbingo.api.ISocketClient;
 import co.startupbingo.startupbingo.dependencies.DaggerGameComponent;
 import co.startupbingo.startupbingo.game.IGameThread;
 import co.startupbingo.startupbingo.model.GameEvent;
+import co.startupbingo.startupbingo.model.Score;
 import co.startupbingo.startupbingo.model.Word;
 import co.startupbingo.startupbingo.ui.GameGridRecyclerAdapter;
 import rx.Observable;
@@ -37,6 +43,7 @@ public class GameActivityFragment extends Fragment implements GameGridRecyclerAd
     @Inject ISocketClient socketClient;
     public IGameThread gameThreadInstance;
     @Bind(R.id.fragment_game_recycler) RecyclerView mRecycler;
+    @Bind(R.id.fragment_game_notifications) TextView mNotifications;
     Context mContext;
     GameGridRecyclerAdapter mAdapter;
 
@@ -78,7 +85,7 @@ public class GameActivityFragment extends Fragment implements GameGridRecyclerAd
     private void setupRecycler() {
         mRecycler.setLayoutManager(new GridLayoutManager(mContext, 4, LinearLayoutManager.VERTICAL, false));
         mRecycler.setItemAnimator(new DefaultItemAnimator());
-        if (mAdapter ==null){
+        if (mAdapter == null){
             mAdapter = new GameGridRecyclerAdapter(getContext());
             mAdapter.setOnEventsListener(this);
         }
@@ -87,10 +94,22 @@ public class GameActivityFragment extends Fragment implements GameGridRecyclerAd
                 .subscribeOn(Schedulers.io())
                 .onBackpressureBuffer()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(mAdapter::addWord, e -> {
-                    Log.e(TAG, "Word Subject Error", e);
-                });
+                .doOnNext(mAdapter::addWord)
+                .doOnError(e->Log.e(TAG,"Word Subject Error",e))
+                .subscribe();
         socketClient.doWordThing();
+        socketClient.getObservableScores()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(this::handleScores)
+                .doOnError(e->Log.e(TAG,"It is error my dudes",e))
+                .subscribe();
+    }
+
+    private void handleScores(Score nextScore) {
+        if (nextScore.getUser().equals(socketClient.getCurrentUser())) {
+
+        }
     }
 
     @Override

@@ -42,6 +42,7 @@ import co.startupbingo.startupbingo.api.ISocketClient;
 import co.startupbingo.startupbingo.api.RealSocketClient;
 import co.startupbingo.startupbingo.api.RestApiClient;
 import co.startupbingo.startupbingo.model.GameEvent;
+import co.startupbingo.startupbingo.model.User;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -116,7 +117,9 @@ public class MainActivity extends AppCompatActivity {
         });
         mButtonLayout.setOnClickListener(v->{
             if (hashTagValid()) {
-                socketClient.joinRoom(mUserText.getText().toString(),mHashText.getText().toString());
+                String userName = mUserText.getText().toString();
+                String userRoom = mHashText.getText().toString();
+                socketClient.joinRoom(new User(userName,userRoom));
             } else {
                 Snackbar.make(mCoordinator,"Form Has Errors", Snackbar.LENGTH_SHORT).show();
             }

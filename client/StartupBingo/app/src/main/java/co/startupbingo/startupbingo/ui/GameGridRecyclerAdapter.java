@@ -1,6 +1,7 @@
 package co.startupbingo.startupbingo.ui;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -58,18 +59,23 @@ public class GameGridRecyclerAdapter extends RecyclerView.Adapter<GameGridRecycl
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Word currentWord = wordArrayList.get(position);
+        int accent = ContextCompat.getColor(mContext,R.color.colorAccent);
+        int primaryDark = ContextCompat.getColor(mContext,R.color.colorPrimaryDark);
+        int primaryTextLight = ContextCompat.getColor(mContext,android.R.color.primary_text_light);
+        int primaryTextDark = ContextCompat.getColor(mContext,android.R.color.primary_text_dark);
+
         holder.tileLayout.setBackgroundColor(currentWord.isChecked?
-                        ContextCompat.getColor(mContext,R.color.colorAccent):
-                        ContextCompat.getColor(mContext,R.color.colorPrimaryDark));
+                        accent:
+                        primaryDark);
         holder.tileTextView.setTextColor(currentWord.isChecked?
-                ContextCompat.getColor(mContext,android.R.color.primary_text_light):
-                ContextCompat.getColor(mContext,android.R.color.primary_text_dark)
+                primaryTextLight:
+                primaryTextDark
         );
         holder.tileTextView.setText(currentWord.getTileString());
         holder.tileClickLayout.setOnClickListener(v-> {
             if (mListener!=null) {
-                mListener.onClickTile(currentWord,position);
                 currentWord.isChecked= !currentWord.isChecked;
+                mListener.onClickTile(currentWord,position);
                 notifyItemChanged(position);
             }
         });

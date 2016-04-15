@@ -21,8 +21,6 @@ public class GameActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         ((StartupBingo)getApplication()).getNetComponent().inject(this);
         setContentView(R.layout.activity_game);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         setupGameFragment();
     }
 

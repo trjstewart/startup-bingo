@@ -31,18 +31,19 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.2.1'
+    compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'com.github.nkzawa:socket.io-client:0.3.0'
-    compile 'com.android.support:design:23.2.1'
+    compile 'com.android.support:design:23.3.0'
     compile 'io.reactivex:rxjava:1.1.2'
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'com.squareup.retrofit2:retrofit:2.0.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
     compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.android.support:support-v4:23.2.1'
+    compile 'com.android.support:support-v4:23.3.0'
     compile 'com.google.code.gson:gson:2.6.2'
     apt 'com.google.dagger:dagger-compiler:2.1'
     compile 'com.google.dagger:dagger:2.1'
     provided 'org.glassfish:javax.annotation:10.0-b28'
+    compile 'jp.wasabeef:recyclerview-animators:2.2.1'
 }

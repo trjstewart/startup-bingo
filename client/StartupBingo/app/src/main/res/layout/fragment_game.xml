@@ -1,22 +1,42 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/fragment_game_icon"
+        android:src="@drawable/logo_trans"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/logo_height"
+        android:scaleType="centerInside"
+        android:padding="16dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+    <TextView
+        android:id="@+id/fragment_game_notifications"
+        android:layout_marginTop="16dp"
+        android:gravity="center_horizontal"
+        android:layout_below="@+id/fragment_game_icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        tools:text="@string/jubb_found_io"
+        android:textSize="24sp"
+        android:fontFamily="sans-serif-condensed"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        android:linksClickable="false"
+        android:lines="2"
+        android:layout_centerHorizontal="true" />
     <android.support.v7.widget.RecyclerView
+        android:layout_alignParentBottom="true"
         android:scrollbars="none"
         android:id="@+id/fragment_game_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp" />
-    <TextView
-        android:layout_marginBottom="100dp"
-        tools:text="Hey m8s"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:lines="2"
-        android:gravity="center"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"/>
+        android:padding="8dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="8dp"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
