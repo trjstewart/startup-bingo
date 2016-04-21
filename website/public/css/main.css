@@ -7,10 +7,10 @@
     src: url('../fonts/SignPainter-HouseScript.ttf');
 }
 
-@font-face {
-    font-family: 'ADAM CC PRO';
-    src: url('../fonts/ADAM.CG%20PRO.otf');
-}
+/*@font-face {*/
+    /*font-family: 'ADAM CC PRO';*/
+    /*src: url('../fonts/ADAM.CG%20PRO.otf');*/
+/*}*/
 
 body {
     padding: 0;
@@ -277,6 +277,75 @@ hr.small {
 /* bingo shit dawg */
 /*TODO mobile shit*/
 
+.cards-container{
+    margin-top: 20px;
+}
+
+.row{
+    margin-bottom: 5px;
+}
+
+.cards-row .card-panel{
+    margin: 0;
+}
+
+.bingo-square {
+    height:120px;
+    /*margin:0.5px;*/
+}
+.bingo-square p {
+    margin: 0 auto;
+}
+
+.input-form{
+    margin-top: 50vh;
+}
+.button-container{
+    width: 100%;
+    display: inline-block;
+
+}
+
+.modal-trigger{
+    width: 100%;
+}
+
+
+.chat-area{
+    height: 150px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.chat-area-expanded{
+    height:50vh;
+}
+
+.submit-button{
+    float: right;
+}
+.modal{
+    overflow-y: hidden !important;
+    max-height: 90% !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/********************/
 .top {
 
     position: absolute;

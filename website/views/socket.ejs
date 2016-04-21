@@ -7,10 +7,15 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
-
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
 
     <!--DANK AS FUCK EMOJIS-->
     <script src="/js/emojify.min.js"></script>
@@ -36,62 +41,73 @@
 <p class="browserupgrade">filthy ie user gtfo</p>
 <![endif]-->
 
-<div class="top">
-    <div class="room-select">
+<div class="container">
+    <!--<div class="col s12 card-panel teal lighten-2">-->
+    <div class="input-form">
+        <div class="row">
+            <form class="col s12">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="username" type="text" class="validate">
+                        <label for="username">Username</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="room" type="text" class="validate">
+                        <label for="room">Event hashtag</label>
+                    </div>
+                </div>
+                <div class="button-container">
+                    <a class="submit-button waves-effect waves-light btn-large">Button</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="game">
+        <div class="cards-container">
 
-        <form id="roomSubmit">
-            <input type="text" id="name" name="name" placeholder="Username eg. 420 blaze lord supreme"><br>
-            <input type="text" id="room" name="room" placeholder="Event name eg. creative event or something"><br>
-            <input type="submit" value="Submit">
-        </form>
-        <div class="rs-error"></div>
+
+
+        </div>
+
+
+        <div class="chat-area col s12">
+
+        </div>
+
+        <a class="modal-trigger waves-effect waves-light btn col s12" href="#modal1">Open chat</a>
     </div>
 
+</div>
 
-    <div class="words-container">
 
+<div id="modal1" class="modal bottom-sheet">
+    <div class="modal-content">
+        <div class="row">
+
+            <div class="chat-area chat-area-expanded col s12">
+
+            </div>
+
+
+            <form class="col s12">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="m" type="text" class="validate">
+                        <label for="m">Message</label>
+                    </div>
+                </div>
+
+                <a class="message-submit-button waves-effect waves-light btn-large">Button</a>
+
+            </form>
+        </div>
     </div>
 </div>
 
-<div class="console">
-
-</div>
-
-<div class="input">
-    <form id="message-submit">
-        <input id="m" type="sub" autocomplete="off"/><input type="submit" value="Submit">
-    </form>
-</div>
-
-<!--<div class="left">-->
-
-<!--<div class="room-select">-->
-<!--<form id="roomSubmit">-->
-<!--<input type="text" id="name" name="name" placeholder="Username eg. 420 blaze lord supreme"><br>-->
-<!--<input type="text" id="room" name="room" placeholder="Event name eg. creative event or something"><br>-->
-<!--<input type="submit" value="Submit">-->
-<!--</form>-->
-<!--</div>-->
-
-<!--<div class="words-container">-->
-
-<!--</div>-->
 
 
-<!--</div>-->
-
-<!--<div class="right">-->
-<!--<div class="events-log">-->
-
-<!--</div>-->
-<!--<form id="message-submit">-->
-<!--<input id="m" type="sub" autocomplete="off" /><input type="submit" value="Submit">-->
-<!--</form>-->
-<!--</div>-->
-
-<!-- /container -->
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
 
 <script src="js/vendor/bootstrap.min.js"></script>
 
@@ -100,7 +116,10 @@
 <script>
 
     var words,user;
-    $('.words-container').hide();
+    $('.game').hide();
+    $(document).ready(function() {
+        $('.modal-trigger').leanModal();
+    });
 
     /*
      Event handler for room submit form
@@ -108,9 +127,9 @@
      emits join room, and words. words returns array of words for bingo board
      */
 
-    $("#roomSubmit").submit(function (event) {
+    $(".submit-button").click(function (event) {
         event.preventDefault();
-        var name = $("#name").val();
+        var name = $("#username").val();
         var room = $("#room").val();
         user = name;
         socket.emit('join_room', {hashtag: room, username: name});
@@ -122,7 +141,7 @@
      some cheeky shiz right here lad ;)
      */
 
-    $('#message-submit').submit(function (event) {
+    $('.message-submit-button').click(function (event) {
         event.preventDefault();
         var message = $("#m").val();
 
@@ -157,13 +176,12 @@
      Bingo board event handler
      */
     //on bingo square click
-    $('body').on('click', '.word', function () {
-        var text = $(this).text();
+    function bingoClicked(param){
+       var text = $(param).text();
         socket.emit('word-found', text);
-        $(this).addClass('word-clicked');
+        $(param).addClass('blue darken-4');
 
-    });
-
+    }
     /*
      saves words to words var, could be useful later. displays bingo board
      */
@@ -179,9 +197,9 @@
 
         if(data.result){
 
-            $('.room-select').fadeOut();
+            $('.input-form').fadeOut();
             socket.emit('words');
-            $('.words-container').fadeIn();
+            $('.game').fadeIn();
         }else{
             printToLogLocal('Username already exists!');
         }
@@ -234,7 +252,7 @@
      restart game
      */
     socket.on('restart', function () {
-        $('.words-container').empty();
+        $('.cards-container').empty();
         socket.emit('words');
     });
 
@@ -247,10 +265,12 @@
         for (var i = 0; i < words.length; i++) {
             if (!(i % 4)) {
                 temp = i;
-                $("<div class='" + i + "'><div class='words-row'></div></div>").appendTo(".words-container");
+//                $("<div class='" + i + "'><div class='row cards-row'></div></div>").appendTo(".cards-container");
+                $("<div class='row cards-row'id='"+i+"'></div>").appendTo(".cards-container");
             }
-            var d = "<div class='col-md-3 col-xs-3 col-sm-3 word'><p>" + words[i] + "</p></div> ";
-            $(d).hide().appendTo("." + temp + "").fadeIn(500);
+            var d = "<div class='card-panel bingo-square col s3 hoverable valign-wrapper blue lighten-2' onclick='bingoClicked(this)'><p class='valign center-align white-text '>" + words[i] + "</p></div> ";
+            $(d).hide().appendTo("#" + temp + " ").fadeIn(500);
+
         }
 
     }
@@ -265,18 +285,20 @@
     }
 
     function printToLogLocal(string) {
-        var t = (emojify.replace('<div class="local-m"><p>' + string + '</p></div><br>'))
+//        var t = (emojify.replace('<div class="local-m"><p>' + string + '</p></div><br>'))
         console.log(t)
 
-        $(t).hide().appendTo(".console").fadeIn(500);
+        var t = emojify.replace('<div class="chat-item card-panel teal"><span class="white-text">'+string+'</span></div>')
+        $(t).hide().appendTo(".chat-area").fadeIn(500);
         updateLogScroll();
     }
 
     function printToLogServer(string){
                                                                     //BRRT BRRT BRRT
-        var t = emojify.replace('<div class="server-m"><p>' + string + '</p></div><br><br><br><br>')
+//        var t = emojify.replace('<div class="server-m"><p>' + string + '</p></div><br><br><br><br>')
+        var t = emojify.replace('<div class="chat-item card-panel teal"><span class="white-text">'+string+'</span></div>')
         console.log(t);
-        $(t).hide().appendTo(".console").fadeIn(500);
+        $(t).hide().appendTo(".chat-area").fadeIn(500);
         updateLogScroll();
     }
 
@@ -295,9 +317,9 @@
      keeps scroll focused on bottom
      */
     function updateLogScroll() {
-        $('.console').stop().animate({
-            scrollTop: $('.console')[0].scrollHeight
-        }, 800);
+        $('.chat-area').stop().animate({
+            scrollTop: $('.chat-area')[1].scrollHeight
+        }, 1000);
     }
 
 
