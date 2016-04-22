@@ -277,7 +277,22 @@ hr.small {
 /* bingo shit dawg */
 /*TODO mobile shit*/
 
+body{
+    height: 100%;
+}
+
+.container{
+    height: 100%;
+}
+
+.game{
+    height: 100%;
+    max-height: 95vh;
+}
+
+
 .cards-container{
+    height:40%;
     margin-top: 20px;
 }
 
@@ -312,7 +327,7 @@ hr.small {
 
 
 .chat-area{
-    height: 150px;
+    height: 50%;
     overflow-y: scroll;
     overflow-x: hidden;
 }
